@@ -25,8 +25,10 @@ gulp.task('cssmin', function () {
 		.pipe(gulp.dest('dist/css'));
 });
 
-gulp.task('html',function () {
-    
-})
+//复制图片
+gulp.task('copy-images', function(){
+	gulp.src('src/image/*')
+		.pipe(gulp.dest('dist/css/img/'));
+});
 
-gulp.task('build', ['clean','webpack','cssmin']);
+gulp.task('build', ['clean','webpack','cssmin','copy-images']);

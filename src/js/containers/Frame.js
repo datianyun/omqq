@@ -8,9 +8,7 @@ class Frame extends Component {
   render() {
     const { todos, actions } = this.props
     return (
-      <div>
         <Header></Header>
-      </div>
     )
   }
 }
