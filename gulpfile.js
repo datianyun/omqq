@@ -25,4 +25,8 @@ gulp.task('cssmin', function () {
 		.pipe(gulp.dest('dist/css'));
 });
 
+gulp.task('html',function () {
+    
+})
+
 gulp.task('build', ['clean','webpack','cssmin']);
