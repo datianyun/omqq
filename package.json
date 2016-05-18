@@ -1,7 +1,7 @@
 {
-    "name": "redux-todomvc-example",
+    "name": "redux-example",
     "version": "0.0.0",
-    "description": "Redux TodoMVC example",
+    "description": "redux-react框架",
     "scripts": {
         "start": "node server.js",
         "test": "cross-env NODE_ENV=test mocha --recursive --compilers js:babel-register --require ./test/setup.js",
@@ -9,11 +9,11 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/reactjs/redux.git"
+        "url": "git@github.com:datianyun/omqq.git"
     },
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/reactjs/redux/issues"
+        "url": "https://github.com/datianyun/omqq/issues"
     },
     "homepage": "http://redux.js.org",
     "dependencies": {
