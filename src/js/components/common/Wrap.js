@@ -39,7 +39,7 @@ class Wrap extends Component {
                             <Menu activeMenu={menuObj}></Menu>
                         </div>
                         <div className="main">
-                            
+
                         </div>
                     </div>
                 </div>

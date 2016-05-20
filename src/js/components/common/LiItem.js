@@ -6,13 +6,14 @@ class LiItem extends Component {
     }
     render() {
         return (
-            <li><a href={this.props.linkUrl}>{this.props.textValue}</a></li>
+            <li className={this.props.classValue}><a className="menu-sub-text" href={this.props.linkUrl}>{this.props.textValue}</a></li>
         )
     }
 }
 
 LiItem.propTypes = {
     textValue: PropTypes.string,
+    classValue: PropTypes.string,
     linkUrl: PropTypes.string
 }
 
