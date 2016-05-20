@@ -23,3 +23,11 @@ export function completeAll() {
 export function clearCompleted() {
   return { type: types.CLEAR_COMPLETED }
 }
+
+export function showUser() {
+  return { type: types.CLEAR_COMPLETED }
+}
+
+export function hideUser() {
+  return { type: types.CLEAR_COMPLETED }
+}
