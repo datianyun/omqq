@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux'
-import todos from './todos'
+import tod from './todos'
+import mail from './mail'
 
 const rootReducer = combineReducers({
-  todos
+  tod,
+  mail
 })
 
 export default rootReducer
