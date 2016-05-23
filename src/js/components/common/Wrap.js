@@ -1,6 +1,6 @@
 import React, {PropTypes, Component} from 'react'
 import Menu from './Menu'
-
+import MailCon from '../mailList/index'
 class Wrap extends Component {
     render() {
         const menuObj = [{
@@ -38,9 +38,7 @@ class Wrap extends Component {
                         <div className="side">
                             <Menu activeMenu={menuObj}></Menu>
                         </div>
-                        <div className="main">
-
-                        </div>
+                        <MailCon></MailCon>
                     </div>
                 </div>
             </div>

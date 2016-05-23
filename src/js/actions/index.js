@@ -48,14 +48,14 @@ export function invalidateMail(mail) {
 
 function requestPosts(mail) {
   return {
-    type: REQUEST_POSTS,
+    type: types.REQUEST_POSTS,
     mail
   }
 }
 
 function receivePosts(mail, json) {
   return {
-    type: RECEIVE_POSTS,
+    type: types.RECEIVE_POSTS,
     mail,
     posts: json.data.children.map(child => child.data),
     receivedAt: Date.now()
@@ -65,14 +65,14 @@ function receivePosts(mail, json) {
 function fetchPosts(mail) {
   return dispatch => {
     dispatch(requestPosts(mail))
-    return fetch(`https://www.mail.com/r/${mail}.json`)
+    return fetch(`https://www.reddit.com/r/${mail}.json`)
       .then(response => response.json())
       .then(json => dispatch(receivePosts(mail, json)))
   }
 }
 
 function shouldFetchPosts(state, mail) {
-  const posts = state.postsBymail[mail]
+  const posts = state.postsByMail[mail]
   if (!posts) {
     return true
   }
