@@ -3,7 +3,6 @@ class MailTable extends Component {
     constructor(props, context) {
         super(props, context)
     }
-
     render() {
         return (
             <table className="table-b">
@@ -21,27 +20,30 @@ class MailTable extends Component {
                         <th>操作</th>
                     </tr>
                 </thead>
-                {this.props.lists.map((item,i)=>
-                    <tr key={i}>
-                        <td>{item['id']}</td>
-                        <td>{item['author']}</td>
-                        <td>{item['score']}</td>
-                        <td>{item['ups']}</td>
-                        <td>{item['created']}</td>
-                        <td>{item['domain']}</td>
-                        <td>{item['id']}</td>
-                        <td>{item['name']}</td>
-                        <td>{item['subreddit_id']}</td>
-                        <td>{item['subreddit']}</td>
-                    </tr>
-                )}
+                <tbody className="mediaList">
+                    {this.props.lists.map((item,i)=>
+                        <tr key={i}>
+                            <td>{item['id']}</td>
+                            <td>{item['author']}</td>
+                            <td>{item['score']}</td>
+                            <td>{item['ups']}</td>
+                            <td>{item['created']}</td>
+                            <td>{item['domain']}</td>
+                            <td>{item['id']}</td>
+                            <td>{item['name']}</td>
+                            <td>{item['subreddit_id']}</td>
+                            <td>{item['subreddit']}</td>
+                        </tr>
+                    )}
+                </tbody>
             </table>
         )
     }
 }
 
 MailTable.propTypes = {
-    lists: PropTypes.array
+    lists: PropTypes.array,
+    total: PropTypes.string
 }
 
 export default MailTable
