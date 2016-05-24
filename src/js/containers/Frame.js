@@ -14,14 +14,14 @@ class Frame extends Component {
       }
 
       componentDidMount() {
-        const { dispatch, selectedMail } = this.props
-        dispatch(TodoActions.fetchPostsIfNeeded(selectedMail))
+        const { dispatch, selectedMedia } = this.props
+        dispatch(TodoActions.fetchPostsIfNeeded(selectedMedia))
       }
 
       componentWillReceiveProps(nextProps) {
-        if (nextProps.selectedMail !== this.props.selectedMail) {
-          const { dispatch, selectedMail } = nextProps
-          dispatch(TodoActions.fetchPostsIfNeeded(selectedMail))
+        if (nextProps.selectedMedia !== this.props.selectedMedia) {
+          const { dispatch, selectedMedia } = nextProps
+          dispatch(TodoActions.fetchPostsIfNeeded(selectedMedia))
         }
       }
 
@@ -31,6 +31,7 @@ class Frame extends Component {
             posts,
             actions
         } = this.props
+        console.log(123)
         console.log(this.props)
         console.log(posts)
         return (
@@ -46,7 +47,7 @@ class Frame extends Component {
 Frame.propTypes = {
     todos: PropTypes.array.isRequired,
     actions: PropTypes.object.isRequired,
-    selectedMail: PropTypes.string.isRequired,
+    selectedMedia: PropTypes.object.isRequired,
     posts: PropTypes.array.isRequired,
     isFetching: PropTypes.bool.isRequired,
     lastUpdated: PropTypes.number,
@@ -62,18 +63,18 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  const { selectedMail, postsByMail,todos} = state
+  const { selectedMedia, postsByMail,todos} = state
   const {
     isFetching,
     lastUpdated,
     items: posts
-} = postsByMail[selectedMail] || {
+} = postsByMail[selectedMedia] || {
     isFetching: true,
     items: []
   }
 
   return {
-    selectedMail,
+    selectedMedia,
     posts,
     isFetching,
     todos,

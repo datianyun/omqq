@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux'
 import todos from './todos'
-import {postsByMail,selectedMail} from './mail'
+import {postsByMail,selectedMedia} from './mail'
 
 const rootReducer = combineReducers({
   todos,
   postsByMail,
-  selectedMail
+  selectedMedia
 })
 
 export default rootReducer

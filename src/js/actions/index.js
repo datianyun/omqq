@@ -53,22 +53,23 @@ function requestPosts(mail) {
   }
 }
 
-function receivePosts(mail, json) {
+function receivePosts(media, json) {
   return {
     type: types.RECEIVE_POSTS,
-    mail,
+    media,
     posts: json.data.children.map(child => child.data),
     receivedAt: Date.now()
   }
 }
 
-function fetchPosts(mail) {
-  return dispatch => {
-    dispatch(requestPosts(mail))
-    return fetch(`https://www.reddit.com/r/${mail}.json`)
-      .then(response => response.json())
-      .then(json => dispatch(receivePosts(mail, json)))
-  }
+function fetchPosts(media) {
+    const params='?wd=' + media.key + '&page=' + media.currentPage + '&limit=' + media.perNum
+    return dispatch => {
+        dispatch(requestPosts(media))
+            return fetch(`https://www.reddit.com/r/${media.key}.json`+params)
+                .then(response => response.json())
+                .then(json => dispatch(receivePosts(media, json)))
+      }
 }
 
 function shouldFetchPosts(state, mail) {

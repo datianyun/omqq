@@ -3,7 +3,11 @@ import {
   REQUEST_POSTS, RECEIVE_POSTS
 } from '../constants/ActionTypes'
 
-export function selectedMail(state = 'reactjs', action) {
+export function selectedMedia(state = {
+    key:'reactjs',
+    currentPage:1,
+    perNum:5
+}, action) {
   switch (action.type) {
     case SELECT_MAIL:
       return action.mail
@@ -45,7 +49,7 @@ export function postsByMail(state = { }, action) {
     case RECEIVE_POSTS:
     case REQUEST_POSTS:
       return Object.assign({}, state, {
-        [action.mail]: posts(state[action.mail], action)
+        [action.media]: posts(state[action.media], action)
       })
     default:
       return state
