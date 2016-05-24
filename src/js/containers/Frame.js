@@ -25,17 +25,18 @@ class Frame extends Component {
         }
       }
 
-
     render() {
-        console.log(this.props)
         const {
             todos,
+            posts,
             actions
         } = this.props
+        console.log(this.props)
+        console.log(posts)
         return (
              <div>
                 <Header></Header>
-                <Wrap></Wrap>
+                <Wrap actions={actions} posts={posts}></Wrap>
                 <Footer></Footer>
              </div>
         )

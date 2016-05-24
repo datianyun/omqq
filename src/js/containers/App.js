@@ -7,7 +7,6 @@ import * as TodoActions from '../actions'
 
 class App extends Component {
   render() {
-    console.log(this.props)
     const { todos, actions } = this.props
     return (
       <div>

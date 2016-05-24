@@ -1,7 +1,7 @@
 import {
   SELECT_MAIL, INVALIDATE_MAIL,
   REQUEST_POSTS, RECEIVE_POSTS
-} from '../actions'
+} from '../constants/ActionTypes'
 
 export function selectedMail(state = 'reactjs', action) {
   switch (action.type) {
@@ -40,8 +40,6 @@ function posts(state = {
 }
 
 export function postsByMail(state = { }, action) {
-    console.log(222)
-    console.log(action)
   switch (action.type) {
     case INVALIDATE_MAIL:
     case RECEIVE_POSTS:
