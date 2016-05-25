@@ -20,6 +20,10 @@ app.get("/login", function(req, res) {
   res.sendFile(__dirname + '/src/html/login.html')
 })
 
+app.get("/system", function(req, res) {
+  res.sendFile(__dirname + '/src/html/system.html')
+})
+
 app.listen(port, function(error) {
   if (error) {
     console.error(error)

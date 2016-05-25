@@ -9,11 +9,11 @@ class Wrap extends Component {
             classValue:'active',
             list:[{
                 name:'邮件配置',
-                classValue:'active',
+                classValue:'',
                 url:'/media/index'
             },{
                 name:'其他配置',
-                classValue:'',
+                classValue:'active',
                 url:'/media/index'
             }]
         },

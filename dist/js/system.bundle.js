@@ -260,7 +260,7 @@
 /******/ 			hotSetStatus("prepare");
 /******/ 			hotCallback = callback;
 /******/ 			hotUpdate = {};
-/******/ 			var chunkId = 1;
+/******/ 			var chunkId = 0;
 /******/ 			{ // eslint-disable-line no-lone-blocks
 /******/ 				/*globals chunkId */
 /******/ 				hotEnsureUpdateChunk(chunkId);
@@ -583,7 +583,7 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(674);
+	__webpack_require__(675);
 	module.exports = __webpack_require__(650);
 
 
@@ -4581,10 +4581,11 @@
 /* 671 */,
 /* 672 */,
 /* 673 */,
-/* 674 */
+/* 674 */,
+/* 675 */
 /***/ function(module, exports, __webpack_require__) {
 
-	eval("'use strict';\n\n__webpack_require__(266);\n\nvar _react = __webpack_require__(15);\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _reactDom = __webpack_require__(474);\n\nvar _reactRedux = __webpack_require__(224);\n\nvar _Frame = __webpack_require__(664);\n\nvar _Frame2 = _interopRequireDefault(_Frame);\n\nvar _configureStore = __webpack_require__(265);\n\nvar _configureStore2 = _interopRequireDefault(_configureStore);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar store = (0, _configureStore2.default)();\n\n(0, _reactDom.render)(_react2.default.createElement(\n  _reactRedux.Provider,\n  { store: store },\n  _react2.default.createElement(_Frame2.default, null)\n), document.getElementById('root'));//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiNjc0LmpzIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vL3NyYy9qcy9lbnRyeS9sb2dpbi5qcz9mMjVmIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCAnYmFiZWwtcG9seWZpbGwnXHJcbmltcG9ydCBSZWFjdCBmcm9tICdyZWFjdCdcclxuaW1wb3J0IHsgcmVuZGVyIH0gZnJvbSAncmVhY3QtZG9tJ1xyXG5pbXBvcnQgeyBQcm92aWRlciB9IGZyb20gJ3JlYWN0LXJlZHV4J1xyXG5pbXBvcnQgQXBwIGZyb20gJy4uL2NvbnRhaW5lcnMvRnJhbWUnXHJcbmltcG9ydCBjb25maWd1cmVTdG9yZSBmcm9tICcuLi9zdG9yZS9jb25maWd1cmVTdG9yZSdcclxuXHJcbmNvbnN0IHN0b3JlID0gY29uZmlndXJlU3RvcmUoKVxyXG5cclxucmVuZGVyKFxyXG4gIDxQcm92aWRlciBzdG9yZT17c3RvcmV9PlxyXG4gICAgPEFwcCAvPlxyXG4gIDwvUHJvdmlkZXI+LFxyXG4gIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdyb290JylcclxuKVxyXG5cblxuXG4vKiogV0VCUEFDSyBGT09URVIgKipcbiAqKiBzcmMvanMvZW50cnkvbG9naW4uanNcbiAqKi8iXSwibWFwcGluZ3MiOiI7O0FBQUE7QUFDQTtBQUFBO0FBQ0E7OztBQUFBO0FBQ0E7QUFBQTtBQUNBO0FBQUE7QUFDQTs7O0FBQUE7QUFDQTs7Ozs7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUFBO0FBQ0E7QUFEQSIsInNvdXJjZVJvb3QiOiIifQ==");
+	eval("'use strict';\n\n__webpack_require__(266);\n\nvar _react = __webpack_require__(15);\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _reactDom = __webpack_require__(474);\n\nvar _reactRedux = __webpack_require__(224);\n\nvar _Frame = __webpack_require__(664);\n\nvar _Frame2 = _interopRequireDefault(_Frame);\n\nvar _configureStore = __webpack_require__(265);\n\nvar _configureStore2 = _interopRequireDefault(_configureStore);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar store = (0, _configureStore2.default)();\n\n(0, _reactDom.render)(_react2.default.createElement(\n  _reactRedux.Provider,\n  { store: store },\n  _react2.default.createElement(_Frame2.default, null)\n), document.getElementById('root'));//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiNjc1LmpzIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vL3NyYy9qcy9lbnRyeS9zeXN0ZW0uanM/YTE0ZCJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgJ2JhYmVsLXBvbHlmaWxsJ1xyXG5pbXBvcnQgUmVhY3QgZnJvbSAncmVhY3QnXHJcbmltcG9ydCB7IHJlbmRlciB9IGZyb20gJ3JlYWN0LWRvbSdcclxuaW1wb3J0IHsgUHJvdmlkZXIgfSBmcm9tICdyZWFjdC1yZWR1eCdcclxuaW1wb3J0IEFwcCBmcm9tICcuLi9jb250YWluZXJzL0ZyYW1lJ1xyXG5pbXBvcnQgY29uZmlndXJlU3RvcmUgZnJvbSAnLi4vc3RvcmUvY29uZmlndXJlU3RvcmUnXHJcblxyXG5jb25zdCBzdG9yZSA9IGNvbmZpZ3VyZVN0b3JlKClcclxuXHJcbnJlbmRlcihcclxuICA8UHJvdmlkZXIgc3RvcmU9e3N0b3JlfT5cclxuICAgIDxBcHAgLz5cclxuICA8L1Byb3ZpZGVyPixcclxuICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgncm9vdCcpXHJcbilcclxuXG5cblxuLyoqIFdFQlBBQ0sgRk9PVEVSICoqXG4gKiogc3JjL2pzL2VudHJ5L3N5c3RlbS5qc1xuICoqLyJdLCJtYXBwaW5ncyI6Ijs7QUFBQTtBQUNBO0FBQUE7QUFDQTs7O0FBQUE7QUFDQTtBQUFBO0FBQ0E7QUFBQTtBQUNBOzs7QUFBQTtBQUNBOzs7OztBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQUE7QUFDQTtBQURBIiwic291cmNlUm9vdCI6IiJ9");
 
 /***/ }
 /******/ ]);

@@ -5,7 +5,8 @@ module.exports = {
   devtool: 'cheap-module-eval-source-map',
   entry: {
       todo: ['./src/js/entry/index.js','webpack-hot-middleware/client'],
-      login: ['./src/js/entry/login.js','webpack-hot-middleware/client']
+      login: ['./src/js/entry/login.js','webpack-hot-middleware/client'],
+      system: ['./src/js/entry/system.js','webpack-hot-middleware/client']
   },
   output: {
     path: path.join(__dirname, 'dist'),
