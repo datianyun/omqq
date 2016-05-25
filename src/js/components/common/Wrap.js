@@ -38,7 +38,7 @@ class Wrap extends Component {
                         <div className="side">
                             <Menu activeMenu={menuObj}></Menu>
                         </div>
-                        <MailCon actions={this.props.actions} mediaObj={this.props.posts}></MailCon>
+                        <MailCon actions={this.props.actions} searchCon={this.props.selectedMedia} mediaObj={this.props.posts}></MailCon>
                     </div>
                 </div>
             </div>
@@ -48,7 +48,8 @@ class Wrap extends Component {
 
 Wrap.propTypes = {
     actions: PropTypes.object.isRequired,
-    posts: PropTypes.array.isRequired
+    posts: PropTypes.array.isRequired,
+    selectedMedia:PropTypes.object.isRequired
 }
 
 export default Wrap

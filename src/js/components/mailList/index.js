@@ -9,17 +9,16 @@ class MailCon extends Component {
     }
 
     render() {
-        const options ={
-            perNum:5,
-            total:39,
-            currentPage:1
-        }
+        const {selectMedia} = this.props.actions
+        const options = Object.assign({},this.props.searchCon,{
+            total:this.props.mediaObj.length
+        })
         return (
             <div className="main">
                 <Bread title='邮件配置'></Bread>
                 <Search></Search>
                 <MailTable total='30' lists={this.props.mediaObj}></MailTable>
-                <Paging options={options}></Paging>
+                <Paging  options={options} selectMedia={selectMedia}></Paging>
             </div>
         )
     }
@@ -27,7 +26,8 @@ class MailCon extends Component {
 
 MailCon.propTypes = {
     actions: PropTypes.object.isRequired,
-    mediaObj: PropTypes.array.isRequired
+    mediaObj: PropTypes.array.isRequired,
+    searchCon: PropTypes.object.isRequired
 }
 
 export default MailCon

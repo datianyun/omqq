@@ -32,24 +32,24 @@ export function showUser() {
 export function hideUser() {
   return { type: types.CLEAR_COMPLETED }
 }
-export function selectMail(mail) {
+export function selectMedia(media) {
   return {
-    type: SELECT_MAIL,
-    mail
+    type: types.SELECT_MEDIA,
+    media
   }
 }
 
-export function invalidateMail(mail) {
+export function invalidateMail(media) {
   return {
-    type: INVALIDATE_MAIL,
-    mail
+    type: types.INVALIDATE_MAIL,
+    media:meidia
   }
 }
 
-function requestPosts(mail) {
+function requestPosts(media) {
   return {
     type: types.REQUEST_POSTS,
-    mail
+    media
   }
 }
 
@@ -72,8 +72,9 @@ function fetchPosts(media) {
       }
 }
 
-function shouldFetchPosts(state, mail) {
-  const posts = state.postsByMail[mail]
+function shouldFetchPosts(state, media) {
+  const pkey = media.currentPage + '-' + media.key
+  const posts = state.postsByMedia[pkey]
   if (!posts) {
     return true
   }
@@ -83,10 +84,10 @@ function shouldFetchPosts(state, mail) {
   return posts.didInvalidate
 }
 
-export function fetchPostsIfNeeded(mail) {
+export function fetchPostsIfNeeded(media) {
   return (dispatch, getState) => {
-    if (shouldFetchPosts(getState(), mail)) {
-      return dispatch(fetchPosts(mail))
+    if (shouldFetchPosts(getState(), media)) {
+      return dispatch(fetchPosts(media))
     }
   }
 }

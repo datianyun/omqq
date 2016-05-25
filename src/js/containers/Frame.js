@@ -29,15 +29,13 @@ class Frame extends Component {
         const {
             todos,
             posts,
-            actions
+            actions,
+            selectedMedia
         } = this.props
-        console.log(123)
-        console.log(this.props)
-        console.log(posts)
         return (
              <div>
                 <Header></Header>
-                <Wrap actions={actions} posts={posts}></Wrap>
+                <Wrap actions={actions} posts={posts} selectedMedia={selectedMedia}></Wrap>
                 <Footer></Footer>
              </div>
         )
@@ -63,12 +61,9 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  const { selectedMedia, postsByMail,todos} = state
-  const {
-    isFetching,
-    lastUpdated,
-    items: posts
-} = postsByMail[selectedMedia] || {
+  const { selectedMedia, postsByMedia,todos} = state
+  const pkey = selectedMedia.currentPage + '-' + selectedMedia.key
+  const {isFetching,lastUpdated,items: posts} = postsByMedia[pkey] || {
     isFetching: true,
     items: []
   }
