@@ -1,7 +1,27 @@
 import React, {PropTypes, Component} from 'react'
-import Menu from './Menu'
-import MailCon from '../mailList/index'
-class Wrap extends Component {
+import Menu from '../common/Menu'
+import MailCon from './index'
+import Bread from '../common/Bread'
+import Wizard from '../common/Wizard'
+import AddMail from './AddMail'
+import AddMedia from './AddMedia'
+import SendMail from './SendMail'
+class MediaCon extends Component {
+    renderAddMail(){
+        return (
+            <AddMail></AddMail>
+        )
+    }
+    renderAddMedia(){
+        return (
+            <AddMedia></AddMedia>
+        )
+    }
+    renderSendMail(){
+        return (
+            <SendMail></SendMail>
+        )
+    }
     render() {
         const menuObj = [{
             id: 1,
@@ -31,14 +51,19 @@ class Wrap extends Component {
                 url:'/media/index'
             }]
         }]
+        const comp = [this.renderAddMail,this.renderAddMedia,this.renderSendMail]
         return (
+
             <div className="wrap">
                 <div className="container">
                     <div className="row">
                         <div className="side">
                             <Menu activeMenu={menuObj}></Menu>
                         </div>
-                        <MailCon actions={this.props.actions} searchCon={this.props.selectedMedia} mediaObj={this.props.posts}></MailCon>
+                        <div className="main">
+                            <Bread title='邮件配置'></Bread>
+                            <Wizard comp={comp}></Wizard>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -46,10 +71,8 @@ class Wrap extends Component {
     }
 }
 
-Wrap.propTypes = {
-    actions: PropTypes.object.isRequired,
-    posts: PropTypes.array.isRequired,
-    selectedMedia:PropTypes.object.isRequired
+MediaCon.propTypes = {
+    actions: PropTypes.object.isRequired
 }
 
-export default Wrap
+export default MediaCon

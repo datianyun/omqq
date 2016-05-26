@@ -15,7 +15,7 @@ export default function configureStore(initialState) {
       const nextReducer = require('../reducers').default
       store.replaceReducer(nextReducer)
     })
-  }
+}
 
   return store
 }
