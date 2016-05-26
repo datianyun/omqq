@@ -8,13 +8,14 @@ class Wizard extends Component {
         }
     }
     handleClick(e){
+        e.preventDefault()
         let target = e.currentTarget;
         let id = target.attributes['data-key'].nodeValue
         this.setState({active:id})
     }
     render() {
         return (
-            <form id="rootwizard" method="post" action="" className="form-horizontal form-wizard">
+            <div id="rootwizard" method="" action="" className="form-horizontal form-wizard">
                 <div className="steps-progress"> <div className="progress-indicator"></div> </div>
                 <ul >
                     {this.props.comp.map((item,index) =>
@@ -37,7 +38,7 @@ class Wizard extends Component {
                         })} id={'tab'+index}>{item()}</div>
                     )}
                 </div>
-            </form>
+            </div>
         )
     }
 }

@@ -13,11 +13,11 @@ class Config extends Component {
 
     render() {
         console.log(this.props)
-        const {actions} = this.props
+        const {actions,mails,medias} = this.props
         return (
              <div>
                 <Header></Header>
-                <MediaCon actions={actions}></MediaCon>
+                <MediaCon actions={actions} mails={mails} medias={medias}></MediaCon>
                 <Footer></Footer>
              </div>
         )
@@ -25,14 +25,16 @@ class Config extends Component {
 }
 
 Config.propTypes = {
-    todos: PropTypes.array.isRequired,
+    mails: PropTypes.array.isRequired,
+    medias:PropTypes.array.isRequired,
     actions: PropTypes.object.isRequired
 }
 
 
 function mapStateToProps(state) {
   return {
-    todos: state.todos
+    mails: state.mails,
+    medias:state.medias
   }
 }
 

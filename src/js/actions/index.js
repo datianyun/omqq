@@ -25,13 +25,6 @@ export function clearCompleted() {
   return { type: types.CLEAR_COMPLETED }
 }
 
-export function showUser() {
-  return { type: types.CLEAR_COMPLETED }
-}
-
-export function hideUser() {
-  return { type: types.CLEAR_COMPLETED }
-}
 export function selectMedia(media) {
   return {
     type: types.SELECT_MEDIA,
@@ -90,4 +83,20 @@ export function fetchPostsIfNeeded(media) {
       return dispatch(fetchPosts(media))
     }
   }
+}
+
+export function addMail(text) {
+  return { type: types.ADD_MAIL, text }
+}
+
+export function deleteMail(id) {
+  return { type: types.DELETE_MAIL, id }
+}
+
+export function addMedia(text) {
+  return { type: types.ADD_MAIL, text }
+}
+
+export function deleteMedia(id) {
+  return { type: types.DELETE_MAIL, id }
 }

@@ -7,14 +7,25 @@ import AddMail from './AddMail'
 import AddMedia from './AddMedia'
 import SendMail from './SendMail'
 class MediaCon extends Component {
+    handleSave(text) {
+      if (text.length !== 0) {
+        this.props.actions.addMail(text)
+      }
+    }
+    handleDelete(id) {
+      if (id !== undefined) {
+        id = parseInt(id)
+        this.props.actions.deleteMail(id)
+      }
+    }
     renderAddMail(){
         return (
-            <AddMail></AddMail>
+            <AddMail mails={this.props.mails} actions={this.props.actions} onSave={this.handleSave.bind(this)} onDelete={this.handleDelete.bind(this)}></AddMail>
         )
     }
     renderAddMedia(){
         return (
-            <AddMedia></AddMedia>
+            <AddMedia medias={this.props.medias} actions={this.props.actions}></AddMedia>
         )
     }
     renderSendMail(){
@@ -51,9 +62,8 @@ class MediaCon extends Component {
                 url:'/media/index'
             }]
         }]
-        const comp = [this.renderAddMail,this.renderAddMedia,this.renderSendMail]
+        const comp = [this.renderAddMail.bind(this),this.renderAddMedia.bind(this),this.renderSendMail.bind(this)]
         return (
-
             <div className="wrap">
                 <div className="container">
                     <div className="row">
@@ -72,7 +82,9 @@ class MediaCon extends Component {
 }
 
 MediaCon.propTypes = {
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+    medias: PropTypes.array.isRequired,
+    mails: PropTypes.array.isRequired
 }
 
 export default MediaCon

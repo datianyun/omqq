@@ -1,7 +1,4 @@
-import {
-  SELECT_MEDIA, INVALIDATE_MAIL,
-  REQUEST_POSTS, RECEIVE_POSTS
-} from '../constants/ActionTypes'
+import {SELECT_MEDIA, INVALIDATE_MAIL,REQUEST_POSTS, RECEIVE_POSTS} from '../constants/ActionTypes'
 
 const initialState = {
     key:'reactjs',
@@ -10,18 +7,18 @@ const initialState = {
 }
 
 export function selectedMedia(state =initialState, action) {
-  switch (action.type) {
-    case SELECT_MEDIA:
-      return action.media
-    default:
-      return state
-  }
+    switch (action.type) {
+        case SELECT_MEDIA:
+            return action.media
+        default:
+            return state
+    }
 }
 
 function posts(state = {
-  isFetching: false,
-  didInvalidate: false,
-  items: []
+    isFetching: false,
+    didInvalidate: false,
+    items: []
 }, action) {
   switch (action.type) {
     case INVALIDATE_MAIL:
