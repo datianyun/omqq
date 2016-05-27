@@ -2,6 +2,7 @@ import {SELECT_MEDIA, INVALIDATE_MAIL,REQUEST_POSTS, RECEIVE_POSTS} from '../con
 
 const initialState = {
     key:'reactjs',
+    path:'/media/mailList',
     currentPage:1,
     perNum:5
 }

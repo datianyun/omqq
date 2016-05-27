@@ -25,18 +25,18 @@ export  function mails(state = initialState, action) {
 
 export function medias(state = initialState, action) {
   switch (action.type) {
-    case ADD_MEDIA:
-      return [
-        {
-          id: state.reduce((maxId, media) => Math.max(media.id, maxId), -1) + 1,
-          text: action.text
-        },
-        ...state
-      ]
+      case ADD_MEDIA:
+          let item = Object.assign({},action.posts[0],{
+              mid: state.reduce((maxId, media) => Math.max(media.id, maxId), -1) + 1
+          })
+          return [
+              item,
+              ...state
+          ]
 
     case DELETE_MEDIA:
       return state.filter(media =>
-        media.id !== action.id
+        media.mid !== action.id
       )
 
     default:

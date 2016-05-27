@@ -8,7 +8,11 @@ var port = 3000
 
 var compiler = webpack(config)
 app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }))
-app.use(webpackHotMiddleware(compiler))
+app.use(webpackHotMiddleware(compiler, {
+  path: '/__webpack_hmr',
+  heartbeat: 10 * 1000
+}));
+
 app.use('/static', express.static('dist'));
 
 app.get("/", function(req, res) {

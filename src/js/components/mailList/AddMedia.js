@@ -10,7 +10,7 @@ class AddMedia extends Component {
             <div className="wizard-step">
                 <h3>添加接收数据邮件的媒体</h3>
                 <div className="form-group">
-                    <Search selectMedia={this.props.actions.selectMedia} actions={this.props.actions}></Search>
+                    <Search type="add" selectMedia={this.props.actions.selectMedia}></Search>
                     <MailTable total='30' lists={this.props.medias}></MailTable>
                 </div>
             </div>

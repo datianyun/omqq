@@ -26,6 +26,7 @@ class Frame extends Component {
       }
 
     render() {
+         console.log(this.props)
         const {
             posts,
             actions,
@@ -62,8 +63,8 @@ function mapStateToProps(state) {
   const { selectedMedia, postsByMedia,todos} = state
   const pkey = selectedMedia.currentPage + '-' + selectedMedia.key
   const {isFetching,lastUpdated,items: posts} = postsByMedia[pkey] || {
-    isFetching: true,
-    items: []
+      isFetching: true,
+      items: []
   }
 
   return {

@@ -4,9 +4,9 @@ var webpack = require('webpack')
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
   entry: {
-      todo: ['./src/js/entry/index.js','webpack-hot-middleware/client'],
-      login: ['./src/js/entry/login.js','webpack-hot-middleware/client'],
-      system: ['./src/js/entry/system.js','webpack-hot-middleware/client']
+      todo: ['./src/js/entry/index.js','webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr'],
+      login: ['./src/js/entry/login.js','webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr'],
+      system: ['./src/js/entry/system.js','webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr']
   },
   output: {
     path: path.join(__dirname, 'dist'),
@@ -15,7 +15,8 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin()
   ],
   module: {
     loaders: [

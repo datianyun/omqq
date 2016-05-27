@@ -3,6 +3,17 @@ class MailTable extends Component {
     constructor(props, context) {
         super(props, context)
     }
+    renderButton(item){
+        if(item.mid!==undefined){
+            return(
+                <a>删除</a>
+            )
+        } else{
+            return(
+                <td>{item['subreddit']}</td>
+            )
+        }
+    }
     render() {
         return (
             <table className="table-b">
@@ -32,7 +43,7 @@ class MailTable extends Component {
                             <td>{item['id']}</td>
                             <td>{item['name']}</td>
                             <td>{item['subreddit_id']}</td>
-                            <td>{item['subreddit']}</td>
+                            {this.renderButton(item)}
                         </tr>
                     )}
                 </tbody>

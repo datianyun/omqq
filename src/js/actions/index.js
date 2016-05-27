@@ -47,12 +47,21 @@ function requestPosts(media) {
 }
 
 function receivePosts(media, json) {
-  return {
-    type: types.RECEIVE_POSTS,
-    media,
-    posts: json.data.children.map(child => child.data),
-    receivedAt: Date.now()
-  }
+    if(media.type==="search"){
+        return {
+            type: types.RECEIVE_POSTS,
+            media,
+            posts: json.data.children.map(child => child.data),
+            receivedAt: Date.now()
+        }
+    } else {
+        return {
+            type: types.ADD_MEDIA,
+            media,
+            posts: json.data.children.map(child => child.data),
+            receivedAt: Date.now()
+        }
+    }
 }
 
 function fetchPosts(media) {
@@ -66,37 +75,37 @@ function fetchPosts(media) {
 }
 
 function shouldFetchPosts(state, media) {
-  const pkey = media.currentPage + '-' + media.key
-  const posts = state.postsByMedia[pkey]
-  if (!posts) {
-    return true
-  }
-  if (posts.isFetching) {
-    return false
-  }
-  return posts.didInvalidate
+    const pkey = media.currentPage + '-' + media.key
+    const posts = state.postsByMedia[pkey]
+    if (!posts) {
+        return true
+    }
+    if (posts.isFetching) {
+        return false
+    }
+    return posts.didInvalidate
 }
 
 export function fetchPostsIfNeeded(media) {
-  return (dispatch, getState) => {
-    if (shouldFetchPosts(getState(), media)) {
-      return dispatch(fetchPosts(media))
+    return (dispatch, getState) => {
+        if (shouldFetchPosts(getState(), media)) {
+            return dispatch(fetchPosts(media))
+        }
     }
-  }
 }
 
 export function addMail(text) {
-  return { type: types.ADD_MAIL, text }
+    return { type: types.ADD_MAIL, text }
 }
 
 export function deleteMail(id) {
-  return { type: types.DELETE_MAIL, id }
+    return { type: types.DELETE_MAIL, id }
 }
 
-export function addMedia(text) {
-  return { type: types.ADD_MAIL, text }
+export function addMedia(media) {
+    return { type: types.ADD_MEDIA, media }
 }
 
 export function deleteMedia(id) {
-  return { type: types.DELETE_MAIL, id }
+    return { type: types.DELETE_MEDIA, id }
 }

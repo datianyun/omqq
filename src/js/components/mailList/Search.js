@@ -8,11 +8,13 @@ class Search extends Component {
     }
     handleSearch(e){
         let initialState = {
+            type: this.props.type,
             key : this.state.key,
             currentPage:1,
             perNum:5
         }
         this.props.selectMedia(initialState)
+
     }
     handleChange(e){
         this.setState({ key: e.target.value })
@@ -35,6 +37,7 @@ class Search extends Component {
 }
 
 Search.propTypes = {
+    type: PropTypes.string.isRequired,
     selectMedia: PropTypes.func.isRequired
 }
 

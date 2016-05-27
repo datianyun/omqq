@@ -53,11 +53,11 @@ class MediaCon extends Component {
             name:'配置',
             classValue:'',
             list:[{
-                name:'邮件配置',
+                name:'查询列表',
                 classValue:'',
                 url:'/media/index'
             },{
-                name:'其他配置',
+                name:'配置我的自媒体',
                 classValue:'',
                 url:'/media/index'
             }]

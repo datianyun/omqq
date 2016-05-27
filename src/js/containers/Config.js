@@ -8,40 +8,55 @@ import * as TodoActions from '../actions'
 
 class Config extends Component {
       constructor(props) {
-        super(props)
+          super(props)
       }
 
-    render() {
-        console.log(this.props)
-        const {actions,mails,medias} = this.props
-        return (
-             <div>
-                <Header></Header>
-                <MediaCon actions={actions} mails={mails} medias={medias}></MediaCon>
-                <Footer></Footer>
-             </div>
-        )
-    }
+      componentDidMount() {
+          console.log(1)
+      }
+
+      componentWillReceiveProps(nextProps) {
+          if (nextProps.selectedMedia !== this.props.selectedMedia) {
+              const { dispatch, selectedMedia } = nextProps
+              dispatch(TodoActions.fetchPostsIfNeeded(selectedMedia))
+          }
+      }
+
+      render() {
+          console.log(this.props)
+          const {actions,mails,medias} = this.props
+          return (
+              <div>
+                    <Header></Header>
+                    <MediaCon actions={actions} mails={mails} medias={medias}></MediaCon>
+                    <Footer></Footer>
+              </div>
+           )
+      }
 }
 
 Config.propTypes = {
     mails: PropTypes.array.isRequired,
     medias:PropTypes.array.isRequired,
+    selectedMedia: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
     actions: PropTypes.object.isRequired
 }
 
 
 function mapStateToProps(state) {
-  return {
-    mails: state.mails,
-    medias:state.medias
-  }
+    return {
+        selectedMedia: state.selectedMedia,
+        mails: state.mails,
+        medias: state.medias
+    }
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(TodoActions, dispatch)
-  }
+    return {
+        dispatch,
+        actions: bindActionCreators(TodoActions, dispatch)
+    }
 }
 
 export default connect(
