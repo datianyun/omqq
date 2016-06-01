@@ -30,7 +30,7 @@ class MediaCon extends Component {
     }
     renderSendMail(){
         return (
-            <SendMail></SendMail>
+            <SendMail handleSave={this.props.handleSave} addTime={this.props.actions.addTime} time={this.props.time}></SendMail>
         )
     }
     render() {
@@ -39,13 +39,9 @@ class MediaCon extends Component {
             name:'功能',
             classValue:'active',
             list:[{
-                name:'邮件配置',
-                classValue:'',
-                url:'/media/index'
-            },{
-                name:'其他配置',
+                name:'邮件列表',
                 classValue:'active',
-                url:'/media/index'
+                url:'/media/mailList'
             }]
         },
         {
@@ -63,6 +59,7 @@ class MediaCon extends Component {
             }]
         }]
         const comp = [this.renderAddMail.bind(this),this.renderAddMedia.bind(this),this.renderSendMail.bind(this)]
+        let breadTitle = '邮件配置 > ' + this.props.getConfig.Fname
         return (
             <div className="wrap">
                 <div className="container">
@@ -71,8 +68,10 @@ class MediaCon extends Component {
                             <Menu activeMenu={menuObj}></Menu>
                         </div>
                         <div className="main">
-                            <Bread title='邮件配置'></Bread>
-                            <Wizard comp={comp}></Wizard>
+                            <Bread title={breadTitle}></Bread>
+                            <AddMail mails={this.props.mails} actions={this.props.actions} onSave={this.handleSave.bind(this)} onDelete={this.handleDelete.bind(this)}></AddMail>
+                            <AddMedia medias={this.props.medias} actions={this.props.actions}></AddMedia>
+                            <SendMail handleSave={this.props.handleSave} addTime={this.props.actions.addTime} time={this.props.time}></SendMail>
                         </div>
                     </div>
                 </div>
@@ -84,6 +83,7 @@ class MediaCon extends Component {
 MediaCon.propTypes = {
     actions: PropTypes.object.isRequired,
     medias: PropTypes.array.isRequired,
+    handleSave: PropTypes.func.isRequired,
     mails: PropTypes.array.isRequired
 }
 

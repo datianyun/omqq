@@ -5,38 +5,35 @@ import Header from '../components/common/Header'
 import Wrap from '../components/mailList/Wrap'
 import Footer from '../components/common/Footer'
 import * as TodoActions from '../actions'
-
+import 'react-s-alert/dist/s-alert-default.css';
+import 'react-s-alert/dist/s-alert-css-effects/slide.css';
+import Alert from 'react-s-alert';
 class Frame extends Component {
-      constructor(props) {
+    constructor(props) {
         super(props)
-        //this.handleChange = this.handleChange.bind(this)
-        //this.handleRefreshClick = this.handleRefreshClick.bind(this)
-      }
+    }
 
-      componentDidMount() {
+    componentDidMount() {
         const { dispatch, selectedMedia } = this.props
         dispatch(TodoActions.fetchPostsIfNeeded(selectedMedia))
-      }
+    }
 
-      componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps) {
         if (nextProps.selectedMedia !== this.props.selectedMedia) {
-          const { dispatch, selectedMedia } = nextProps
-          dispatch(TodoActions.fetchPostsIfNeeded(selectedMedia))
+            const { dispatch, selectedMedia } = nextProps
+            dispatch(TodoActions.fetchPostsIfNeeded(selectedMedia))
         }
-      }
+    }
 
     render() {
-         console.log(this.props)
-        const {
-            posts,
-            actions,
-            selectedMedia
-        } = this.props
+        console.log('render')
+        console.log(this.props)
+        const {posts,actions,total,selectedMedia} = this.props
         return (
-             <div>
-                <Header></Header>
-                <Wrap actions={actions} posts={posts} selectedMedia={selectedMedia}></Wrap>
+            <div>
+                <Wrap actions={actions} posts={posts} selectedMedia={selectedMedia} total={total}></Wrap>
                 <Footer></Footer>
+                <Alert stack={{limit: 3}} />
              </div>
         )
     }
@@ -60,19 +57,19 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  const { selectedMedia, postsByMedia,todos} = state
-  const pkey = selectedMedia.currentPage + '-' + selectedMedia.key
-  const {isFetching,lastUpdated,items: posts} = postsByMedia[pkey] || {
-      isFetching: true,
-      items: []
-  }
-
-  return {
-    selectedMedia,
-    posts,
-    isFetching,
-    lastUpdated
-  }
+    const {selectedMedia, postsByMedia} = state
+    const pkey = selectedMedia.currentPage + '-' + selectedMedia.key
+    const {isFetching,lastUpdated,items: posts,total} = postsByMedia[pkey] || {
+        isFetching: true,
+        items: []
+    }
+    return {
+        selectedMedia,
+        posts,
+        total,
+        isFetching,
+        lastUpdated
+    }
 }
 
 export default connect(

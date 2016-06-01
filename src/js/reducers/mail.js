@@ -1,9 +1,10 @@
 import {SELECT_MEDIA, INVALIDATE_MAIL,REQUEST_POSTS, RECEIVE_POSTS} from '../constants/ActionTypes'
 
 const initialState = {
-    key:'reactjs',
-    path:'/media/mailList',
+    key:'',
+    path:'/media/mailListData',
     currentPage:1,
+    type: 'search',
     perNum:5
 }
 
@@ -36,6 +37,7 @@ function posts(state = {
         isFetching: false,
         didInvalidate: false,
         items: action.posts,
+        total: action.total,
         lastUpdated: action.receivedAt
       })
     default:

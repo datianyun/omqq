@@ -1,16 +1,136 @@
 import React, {PropTypes, Component} from 'react'
+import 'whatwg-fetch'
+var Alert = require('react-s-alert').default
+import {params} from '../../lib/param'
 class MailTable extends Component {
     constructor(props, context) {
         super(props, context)
     }
+    handleDelete(e){
+        let target = e.target;
+        let fid = parseInt(target.dataset.id)
+        this.props.deleteMedia(fid)
+    }
+    handleClick(e){
+        let target = e.target;
+        let fid = target.parentNode.dataset.id
+        if(target.className==='extend'){
+            fetch('/media/extendMail', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: params({
+                    media_id: fid
+                })
+            }).then(function(response) {
+                return response.json()
+            }).then(function(json) {
+                if(json.response.code===0){
+                    let salert = Alert.info('续期成功', {
+                        effect: '',
+                        position: 'top-right',
+                        timeout: 3000,
+                        offset: 100,
+                        onClose: function(e){
+                             Alert.close(salert);
+                        }
+                    });
+                }else{
+                    Alert.info(json.response.msg, {
+                        effect: '',
+                        position: 'top-right',
+                        timeout: 3000,
+                        onClose: function(e){
+                            Alert.closeAll();
+                        }
+                    });
+                }
+            }).catch(function(ex) {
+                Alert.error(ex, {
+                    effect: '',
+                    position: 'top-right',
+                    timeout: 3000,
+                    onClose: function(e){
+                        Alert.closeAll();
+                    }
+                 });
+            })
+        }else if(target.className==='config') {
+            window.location.href = '/media/mailConfig?media_id='+fid
+        }else if(target.className==='clear') {
+            fetch('/media/clearMail', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: params({
+                    media_id: fid
+                })
+            }).then(function(response) {
+                return response.json()
+            }).then(function(json) {
+                if(json.response.code===0){
+                    let salert = Alert.info('清除配置成功', {
+                        effect: '',
+                        position: 'top-right',
+                        timeout: 3000,
+                        onClose: function(e){
+                             Alert.close(salert);
+                        }
+                    });
+                }else{
+                    Alert.info(json.response.msg, {
+                        effect: '',
+                        position: 'top-right',
+                        timeout: 3000,
+                        onClose: function(e){
+                            Alert.closeAll();
+                        }
+                    });
+                }
+            }).catch(function(ex) {
+                Alert.error(ex, {
+                    effect: '',
+                    position: 'top-right',
+                    timeout: 3000,
+                    onClose: function(e){
+                        Alert.closeAll();
+                    }
+                 });
+            })
+        }
+    }
     renderButton(item){
         if(item.mid!==undefined){
             return(
-                <a>删除</a>
+                <td onClick={this.handleDelete.bind(this)}><a data-id={item.mid}>删除</a></td>
             )
         } else{
+            let buttons = []
+            let opt = item['operate_btns']
+            for(let i=0;i<opt.length;i++){
+                if(opt[i]==='configBtn'){
+                    buttons.push({
+                        className:'config',
+                        value:'配置'
+                    })
+                }else if(opt[i] ==='extendBtn'){
+                    buttons.push({
+                        className:'extend',
+                        value:'续期'
+                    })
+                }else if(opt[i] ==='clearBtn'){
+                    buttons.push({
+                        className:'clear',
+                        value:'清除'
+                    })
+                }
+            }
             return(
-                <td>{item['subreddit']}</td>
+                <td data-id={item['Fid']} onClick={this.handleClick.bind(this)}>{buttons.map((btn,i)=>
+                    <a key={i} className={btn.className}>{btn.value}</a>
+                )}</td>
             )
         }
     }
@@ -34,15 +154,15 @@ class MailTable extends Component {
                 <tbody className="mediaList">
                     {this.props.lists.map((item,i)=>
                         <tr key={i}>
-                            <td>{item['id']}</td>
-                            <td>{item['author']}</td>
-                            <td>{item['score']}</td>
-                            <td>{item['ups']}</td>
-                            <td>{item['created']}</td>
-                            <td>{item['domain']}</td>
-                            <td>{item['id']}</td>
-                            <td>{item['name']}</td>
-                            <td>{item['subreddit_id']}</td>
+                            <td>{item['Fid']}</td>
+                            <td>{item['Fname']}</td>
+                            <td>{item['Fwechat']}</td>
+                            <td>{item['Fsource_value']}</td>
+                            <td>{item['Freg_email']}</td>
+                            <td>{item['Fcatalog_value']}</td>
+                            <td>{item['Fmms_catalog']}</td>
+                            <td>{item['Fstatus_value']}</td>
+                            <td>{item['Fmail_config_status']}</td>
                             {this.renderButton(item)}
                         </tr>
                     )}
@@ -53,8 +173,8 @@ class MailTable extends Component {
 }
 
 MailTable.propTypes = {
-    lists: PropTypes.array,
-    total: PropTypes.string
+    deleteMedia: PropTypes.func.isRequired,
+    lists: PropTypes.array
 }
 
 export default MailTable

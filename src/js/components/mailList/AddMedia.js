@@ -1,6 +1,7 @@
 import React, {PropTypes, Component} from 'react'
 import Search from './Search'
 import MailTable from './MailTable'
+require('react-datetime');
 class AddMedia extends Component {
     constructor(props, context) {
         super(props, context)
@@ -8,10 +9,10 @@ class AddMedia extends Component {
     render() {
         return (
             <div className="wizard-step">
-                <h3>添加接收数据邮件的媒体</h3>
+                <h3>第二步，添加接收数据邮件的媒体</h3>
                 <div className="form-group">
                     <Search type="add" selectMedia={this.props.actions.selectMedia}></Search>
-                    <MailTable total='30' lists={this.props.medias}></MailTable>
+                    <MailTable total='30' lists={this.props.medias} deleteMedia={this.props.actions.deleteMedia}></MailTable>
                 </div>
             </div>
         )

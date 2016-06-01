@@ -1,74 +1,62 @@
 import * as types from '../constants/ActionTypes'
 import fetch from 'isomorphic-fetch'
 
-export function addTodo(text) {
-  return { type: types.ADD_TODO, text }
-}
-
-export function deleteTodo(id) {
-  return { type: types.DELETE_TODO, id }
-}
-
-export function editTodo(id, text) {
-  return { type: types.EDIT_TODO, id, text }
-}
-
-export function completeTodo(id) {
-  return { type: types.COMPLETE_TODO, id }
-}
-
-export function completeAll() {
-  return { type: types.COMPLETE_ALL }
-}
-
-export function clearCompleted() {
-  return { type: types.CLEAR_COMPLETED }
-}
-
 export function selectMedia(media) {
-  return {
-    type: types.SELECT_MEDIA,
-    media
-  }
+    return {
+        type: types.SELECT_MEDIA,
+        media
+    }
 }
 
 export function invalidateMail(media) {
-  return {
-    type: types.INVALIDATE_MAIL,
-    media:meidia
-  }
+    return {
+        type: types.INVALIDATE_MAIL,
+        media:meidia
+    }
 }
 
 function requestPosts(media) {
-  return {
-    type: types.REQUEST_POSTS,
-    media
-  }
+    return {
+        type: types.REQUEST_POSTS,
+        media
+    }
 }
 
 function receivePosts(media, json) {
+    console.log('receivePosts')
     if(media.type==="search"){
+        console.log('search')
         return {
             type: types.RECEIVE_POSTS,
             media,
-            posts: json.data.children.map(child => child.data),
+            posts: json.data.list,
+            total: json.data.count,
             receivedAt: Date.now()
         }
-    } else {
+    } else if(media.type==="add") {
+        console.log('add')
         return {
             type: types.ADD_MEDIA,
             media,
-            posts: json.data.children.map(child => child.data),
+            posts: json.data.list,
+            total: json.data.count,
+            receivedAt: Date.now()
+        }
+    } else{
+        return {
+            type: types.ADD_CONFIG,
+            media,
+            posts: json.data,
             receivedAt: Date.now()
         }
     }
 }
 
 function fetchPosts(media) {
-    const params='?wd=' + media.key + '&page=' + media.currentPage + '&limit=' + media.perNum
+    const params='?keyword=' + media.key + '&page=' + media.currentPage + '&size=' + media.perNum
     return dispatch => {
         dispatch(requestPosts(media))
-            return fetch(`https://www.reddit.com/r/${media.key}.json`+params)
+            return fetch(media.path+params)
                 .then(response => response.json())
                 .then(json => dispatch(receivePosts(media, json)))
       }
@@ -97,6 +85,12 @@ export function fetchPostsIfNeeded(media) {
 export function addMail(text) {
     return { type: types.ADD_MAIL, text }
 }
+export function addTime(time) {
+    return {
+        type: types.ADD_TIME,
+        time
+    }
+}
 
 export function deleteMail(id) {
     return { type: types.DELETE_MAIL, id }
@@ -108,4 +102,14 @@ export function addMedia(media) {
 
 export function deleteMedia(id) {
     return { type: types.DELETE_MEDIA, id }
+}
+
+export function fetchConfig(config){
+    const params = '?media_id=' + config.mid
+    return dispatch => {
+        dispatch(requestPosts(config))
+            return fetch(config.path+params)
+                .then(response => response.json())
+                .then(json => dispatch(receivePosts(config, json)))
+      }
 }

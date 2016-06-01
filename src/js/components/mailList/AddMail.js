@@ -36,7 +36,7 @@ class AddMail extends Component {
     render() {
         return (
             <div className="wizard-step">
-                <h3>添加收件人邮箱</h3>
+                <h3>第一步，添加收件人邮箱</h3>
                 <div className="form-group">
                     <input type="email" id="if-email" name="if-email" className="input" placeholder="输入邮箱.." autoFocus="true"
                     value={this.state.text}

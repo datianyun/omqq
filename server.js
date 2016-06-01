@@ -15,9 +15,7 @@ app.use(webpackHotMiddleware(compiler, {
 
 app.use('/static', express.static('dist'));
 
-app.get("/", function(req, res) {
-  res.sendFile(__dirname + '/src/html/index.html')
-})
+
 
 
 app.get("/login", function(req, res) {

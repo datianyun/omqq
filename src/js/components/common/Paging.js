@@ -12,6 +12,8 @@ class Paging extends Component {
         let media = {
             key:data.key,
             currentPage:data.currentPage,
+            path:data.path,
+            type:data.type,
             perNum:data.perNum
         }
         if(cname.indexOf('disagble')!==-1){
