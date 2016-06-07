@@ -1,5 +1,5 @@
 import React, {PropTypes, Component} from 'react'
-
+var Alert = require('react-s-alert').default
 class AddMail extends Component {
     constructor(props, context) {
         super(props, context)
@@ -23,8 +23,20 @@ class AddMail extends Component {
 
     handleSave(){
         const text = this.state.text
-        this.props.onSave(text)
-        this.setState({ text: '' })
+        let reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/g
+        if(reg.test(text)){
+            this.props.onSave(text)
+            this.setState({ text: '' })
+        } else {
+            Alert.error('邮箱格式错误', {
+                effect: '',
+                position: 'top',
+                timeout: 3000,
+                onClose: function(e){
+                    Alert.closeAll();
+                }
+             });
+        }
     }
 
     handleDelete(e){

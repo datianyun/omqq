@@ -1,5 +1,6 @@
-import { ADD_MAIL, DELETE_MAIL, ADD_MEDIA, DELETE_MEDIA, GET_CONFIG,ADD_CONFIG,ADD_TIME} from '../constants/ActionTypes'
-
+import { ADD_MAIL, DELETE_MAIL, ADD_MEDIA, DELETE_MEDIA, GET_CONFIG,ADD_CONFIG,ADD_TIME, ADD_ALERT,DELETE_ALERT} from '../constants/ActionTypes'
+import {addAlert} from '../actions/index'
+import moment from 'moment'
 const initialState = []
 const initConfig = {}
 export  function mails(state = initialState, action) {
@@ -15,7 +16,7 @@ export  function mails(state = initialState, action) {
         case ADD_CONFIG:
             let emails = []
             let mailList = []
-            if(action.posts.Fbd_email_list !==""){
+            if(action.posts.Fbd_email_list !=="" && action.posts.Fbd_email_list !==null){
                 emails = action.posts.Fbd_email_list.split(",")
                 emails.forEach(function(item){
                     mailList.push({
@@ -33,7 +34,9 @@ export  function mails(state = initialState, action) {
             return state
     }
 }
-export function getConfig(state = initConfig, action) {
+export function getConfig(state = {
+    Fname:''
+}, action) {
     switch (action.type) {
         case GET_CONFIG:
             return action.media
@@ -44,9 +47,36 @@ export function getConfig(state = initConfig, action) {
             return state
     }
 }
+export function alerts(state={
+    info:null
+}, action) {
+    switch (action.type) {
+        case ADD_MEDIA:
+            if(action.posts.length === 0) {
+                return Object.assign({}, action.alerts, {
+                    info: '不合法的邮箱'
+                })
+            }
+            let fmedia = action.posts[0]
+            if(fmedia.Fbd_mail_config != 1){
+                return Object.assign({}, action.alerts, {
+                    info: fmedia.Fmail_config_flag
+                })
+            }
+            return state
+        case DELETE_ALERT:
+            return Object.assign({}, action.alerts, {
+                info: null
+            })
+        default:
+            return state
+    }
+}
+
 export function time(state = {
     startDate : undefined,
-    endDate: undefined
+    endDate: undefined,
+    type: undefined
 },action) {
     switch (action.type) {
         case ADD_TIME:
@@ -56,8 +86,15 @@ export function time(state = {
             return tar
         case ADD_CONFIG:
             let obj = {}
-            obj.startDate = action.posts.Fbd_email_starttime
-            obj.endDate = action.posts.Fbd_email_endtime
+            if(action.posts.Fbd_email_starttime==null){
+                obj.startDate = moment().format('YYYY-MM-DD')
+                obj.endDate = moment().add(3, 'months').format('YYYY-MM-DD')
+                obj.type = 'var'
+            } else {
+                obj.startDate = action.posts.Fbd_email_starttime
+                obj.endDate = action.posts.Fbd_email_endtime
+                obj.type = 'const'
+            }
             return obj
         default:
             return state
@@ -66,26 +103,35 @@ export function time(state = {
 export function medias(state = initialState, action) {
     switch (action.type) {
         case ADD_MEDIA:
-            let item = Object.assign({},action.posts[0],{
-                mid: state.reduce((maxId, media) => Math.max(media.mid, maxId), -1) + 1
-            })
-            return [
-                item,
-                ...state
-            ]
+            if(action.posts.length === 0) {
+                return state
+            }
+            let fmedia = action.posts[0]
+            if(fmedia.Fbd_mail_config == '1'){
+                let item = Object.assign({},fmedia,{
+                    mid: state.reduce((maxId, media) => Math.max(media.mid, maxId), -1) + 1,
+                    mtype: 'unsave'
+                })
+                return [
+                    item,
+                    ...state
+                ]
+            } else {
+                return state
+            }
         case ADD_CONFIG:
             let mediaList = []
             action.posts.children_data.forEach(function(item){
                 let obj = Object.assign({},item,{
-                    mid: state.reduce((maxId, media) => Math.max(media.mid, maxId), -1) + 1
+                    mid: mediaList.reduce((maxId, media) => Math.max(media.mid, maxId), -1) + 1
                 })
                 mediaList.push(obj)
             })
             return mediaList
         case DELETE_MEDIA:
             return state.filter(media =>
-            media.mid !== action.id
-        )
+                media.mid !== action.media.id
+            )
 
         default:
             return state

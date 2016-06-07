@@ -6,50 +6,36 @@ class SendMail extends Component {
         super(props, context)
         this.handleApply = this.handleApply.bind(this);
         this.state = {
-            startDate: moment(),
-            endDate: moment().add(3, 'months'),
-            ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-            },
+            startDate: moment()
         };
 
     }
     handleApply(event, picker) {
         this.setState({
-            startDate: picker.startDate,
-            endDate: picker.endDate
+            startDate: picker.startDate
         });
         this.props.addTime({
-            startDate: picker.startDate.format('YYYY-MM-DD HH:mm:ss'),
-            endDate: picker.endDate.format('YYYY-MM-DD HH:mm:ss')
+            startDate: picker.startDate.format('YYYY-MM-DD')
         })
     }
-    handleSubmit(){
-
+    handleCancel(){
+        window.location.href = '/media/mailList'
     }
-    render() {
+    renderDate(){
         let start;
         let end;
-        if(this.props.time.startDate!=''){
+        if(this.props.time.startDate!=''&&this.props.time.startDate!==null){
             start = this.props.time.startDate
-            end = this.props.time.endDate
         } else {
-            start = this.state.startDate.format('YYYY-MM-DD HH:mm:ss');
-            end = this.state.endDate.format('YYYY-MM-DD HH:mm:ss');
+            start = this.state.startDate.format('YYYY-MM-DD');
         }
-
-        let label = start + ' - ' + end;
-        if (start === end) {
-            label = start;
+        if(this.props.time.type==='const') {
+            start += '(有效期90天)'
         }
+        let label = start;
 
         let locale = {
-            format: 'YYYY-MM-DD HH:mm:ss',
+            format: 'YYYY-MM-DD',
             separator: ' - ',
             applyLabel: 'Apply',
             cancelLabel: 'Cancel',
@@ -59,29 +45,45 @@ class SendMail extends Component {
             monthNames: moment.monthsShort(),
             firstDay: moment.localeData().firstDayOfWeek(),
         }
+        if(this.props.time.type==='const'){
+            return (
+                <div className="input-group">
+                  <input type="text" className="form-control" defaultValue={label} disabled/>
+                    <span className="input-group-btn">
+                        <button className="default date-range-toggle btn btn-default" type="button">
+                            <i className="fa fa-calendar"></i>
+                        </button>
+                    </span>
+                </div>
+            )
+        } else {
+            return (
+                <DatetimeRangePicker
+                    singleDatePicker
+                    showDropdowns
+                    locale={locale}
+                    startDate={this.state.startDate}
+                    onApply={this.handleApply}
+                  >
+                    <div className="input-group">
+                      <input type="text" className="form-control" value={label} onChange={this.handleApply}/>
+                        <span className="input-group-btn">
+                            <button className="default date-range-toggle btn btn-default" type="button">
+                                <i className="fa fa-calendar"></i>
+                            </button>
+                        </span>
+                    </div>
+                 </DatetimeRangePicker>
+            )
+        }
+    }
+    render() {
+
         return (
             <div className="wizard-step">
-                <h3>第三步，邮件发送有效时段和发送时间</h3>
+                <h3>第三步，邮件发送起始时间</h3>
                 <div className="form-group dateRange">
-                    <DatetimeRangePicker
-                        timePicker
-                        timePicker24Hour
-                        showDropdowns
-                        timePickerSeconds
-                        locale={locale}
-                        startDate={this.state.startDate}
-                        endDate={this.state.endDate}
-                        onApply={this.handleApply}
-                      >
-                        <div className="input-group">
-                          <input type="text" className="form-control" value={label} onChange={this.handleApply}/>
-                            <span className="input-group-btn">
-                                <button className="default date-range-toggle btn btn-default" type="button">
-                                    <i className="fa fa-calendar"></i>
-                                </button>
-                            </span>
-                        </div>
-                     </DatetimeRangePicker>
+                    {this.renderDate()}
                 </div>
                 <h3>发送时间 每周一上午11：00(如遇特殊情况可能稍有延迟)</h3>
                 <div className="form-group">

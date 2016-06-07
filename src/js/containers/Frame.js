@@ -26,8 +26,6 @@ class Frame extends Component {
     }
 
     render() {
-        console.log('render')
-        console.log(this.props)
         const {posts,actions,total,selectedMedia} = this.props
         return (
             <div>

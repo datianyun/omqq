@@ -9,7 +9,11 @@ class MailTable extends Component {
     handleDelete(e){
         let target = e.target;
         let fid = parseInt(target.dataset.id)
-        this.props.deleteMedia(fid)
+        let femail = target.dataset.email
+        this.props.deleteMedia({
+            id: fid,
+            email:femail
+        })
     }
     handleClick(e){
         let target = e.target;
@@ -17,6 +21,7 @@ class MailTable extends Component {
         if(target.className==='extend'){
             fetch('/media/extendMail', {
                 method: 'POST',
+                credentials: 'same-origin',
                 headers: {
                   'Content-Type': 'application/x-www-form-urlencoded'
                 },
@@ -29,7 +34,7 @@ class MailTable extends Component {
                 if(json.response.code===0){
                     let salert = Alert.info('续期成功', {
                         effect: '',
-                        position: 'top-right',
+                        position: 'top',
                         timeout: 3000,
                         offset: 100,
                         onClose: function(e){
@@ -39,7 +44,7 @@ class MailTable extends Component {
                 }else{
                     Alert.info(json.response.msg, {
                         effect: '',
-                        position: 'top-right',
+                        position: 'top',
                         timeout: 3000,
                         onClose: function(e){
                             Alert.closeAll();
@@ -49,7 +54,7 @@ class MailTable extends Component {
             }).catch(function(ex) {
                 Alert.error(ex, {
                     effect: '',
-                    position: 'top-right',
+                    position: 'top',
                     timeout: 3000,
                     onClose: function(e){
                         Alert.closeAll();
@@ -61,6 +66,7 @@ class MailTable extends Component {
         }else if(target.className==='clear') {
             fetch('/media/clearMail', {
                 method: 'POST',
+                credentials: 'same-origin',
                 headers: {
                   'Content-Type': 'application/x-www-form-urlencoded'
                 },
@@ -73,16 +79,17 @@ class MailTable extends Component {
                 if(json.response.code===0){
                     let salert = Alert.info('清除配置成功', {
                         effect: '',
-                        position: 'top-right',
+                        position: 'top',
                         timeout: 3000,
                         onClose: function(e){
                              Alert.close(salert);
                         }
                     });
+                    window.location.reload()
                 }else{
                     Alert.info(json.response.msg, {
                         effect: '',
-                        position: 'top-right',
+                        position: 'top',
                         timeout: 3000,
                         onClose: function(e){
                             Alert.closeAll();
@@ -92,7 +99,7 @@ class MailTable extends Component {
             }).catch(function(ex) {
                 Alert.error(ex, {
                     effect: '',
-                    position: 'top-right',
+                    position: 'top',
                     timeout: 3000,
                     onClose: function(e){
                         Alert.closeAll();
@@ -103,9 +110,21 @@ class MailTable extends Component {
     }
     renderButton(item){
         if(item.mid!==undefined){
-            return(
-                <td onClick={this.handleDelete.bind(this)}><a data-id={item.mid}>删除</a></td>
-            )
+            if(item.config_del_btns.length > 0) {
+                return(
+                    <td onClick={this.handleDelete.bind(this)}><a data-email={item.Freg_email} data-id={item.mid}>删除</a></td>
+                )
+            } else {
+                if(item.mtype!==undefined) {
+                    return(
+                        <td onClick={this.handleDelete.bind(this)}><a data-email={item.Freg_email} data-id={item.mid}>删除</a></td>
+                    )
+                } else {
+                    return(
+                        <td ></td>
+                    )
+                }
+            }
         } else{
             let buttons = []
             let opt = item['operate_btns']
@@ -134,23 +153,44 @@ class MailTable extends Component {
             )
         }
     }
-    render() {
-        return (
-            <table className="table-b">
-                <thead>
-                    <tr>
-                        <th>媒体ID</th>
-                        <th>媒体名称</th>
-                        <th>验证微信</th>
-                        <th>来源</th>
-                        <th>注册邮箱</th>
-                        <th>运营分类</th>
-                        <th>MMS分类</th>
-                        <th>运营状态</th>
-                        <th>邮件状态</th>
-                        <th>操作</th>
-                    </tr>
-                </thead>
+    renderTR(){
+        if(this.props.type==='add') {
+            return (
+                <tr>
+                    <th>媒体ID</th>
+                    <th>媒体名称</th>
+                    <th>验证微信</th>
+                    <th>来源</th>
+                    <th>注册邮箱</th>
+                    <th>运营分类</th>
+                    <th>MMS分类</th>
+                    <th>运营状态</th>
+                    <th>邮件状态</th>
+                    <th>操作</th>
+                </tr>
+            )
+        } else {
+            return (
+                <tr>
+                    <th>媒体ID</th>
+                    <th>媒体名称</th>
+                    <th>验证微信</th>
+                    <th>来源</th>
+                    <th>注册邮箱</th>
+                    <th>运营分类</th>
+                    <th>MMS分类</th>
+                    <th>运营状态</th>
+                    <th>邮件状态</th>
+                    <th>起始时间</th>
+                    <th>结束时间</th>
+                    <th>操作</th>
+                </tr>
+            )
+        }
+    }
+    renderTBODY(ITEM){
+        if(this.props.type==='add') {
+            return (
                 <tbody className="mediaList">
                     {this.props.lists.map((item,i)=>
                         <tr key={i}>
@@ -167,6 +207,37 @@ class MailTable extends Component {
                         </tr>
                     )}
                 </tbody>
+            )
+        } else {
+            return (
+                <tbody className="mediaList">
+                    {this.props.lists.map((item,i)=>
+                        <tr key={i}>
+                            <td>{item['Fid']}</td>
+                            <td>{item['Fname']}</td>
+                            <td>{item['Fwechat']}</td>
+                            <td>{item['Fsource_value']}</td>
+                            <td>{item['Freg_email']}</td>
+                            <td>{item['Fcatalog_value']}</td>
+                            <td>{item['Fmms_catalog']}</td>
+                            <td>{item['Fstatus_value']}</td>
+                            <td>{item['Fmail_config_status']}</td>
+                            <td>{item['Fbd_email_starttime']}</td>
+                            <td>{item['Fbd_email_endtime']}</td>
+                            {this.renderButton(item)}
+                        </tr>
+                    )}
+                </tbody>
+            )
+        }
+    }
+    render() {
+        return (
+            <table className="table-b">
+                <thead>
+                    {this.renderTR()}
+                </thead>
+                {this.renderTBODY()}
             </table>
         )
     }
@@ -174,6 +245,7 @@ class MailTable extends Component {
 
 MailTable.propTypes = {
     deleteMedia: PropTypes.func.isRequired,
+    type:PropTypes.string,
     lists: PropTypes.array
 }
 

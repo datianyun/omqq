@@ -23,9 +23,7 @@ function requestPosts(media) {
 }
 
 function receivePosts(media, json) {
-    console.log('receivePosts')
     if(media.type==="search"){
-        console.log('search')
         return {
             type: types.RECEIVE_POSTS,
             media,
@@ -34,7 +32,6 @@ function receivePosts(media, json) {
             receivedAt: Date.now()
         }
     } else if(media.type==="add") {
-        console.log('add')
         return {
             type: types.ADD_MEDIA,
             media,
@@ -56,8 +53,9 @@ function fetchPosts(media) {
     const params='?keyword=' + media.key + '&page=' + media.currentPage + '&size=' + media.perNum
     return dispatch => {
         dispatch(requestPosts(media))
-            return fetch(media.path+params)
-                .then(response => response.json())
+            return fetch(media.path+params,{
+               credentials: 'same-origin'
+            }).then(response => response.json())
                 .then(json => dispatch(receivePosts(media, json)))
       }
 }
@@ -81,6 +79,11 @@ export function fetchPostsIfNeeded(media) {
         }
     }
 }
+export function fetchMediaIfNeeded(media){
+    return (dispatch, getState) => {
+        return dispatch(fetchPosts(media))
+    }
+}
 
 export function addMail(text) {
     return { type: types.ADD_MAIL, text }
@@ -100,16 +103,24 @@ export function addMedia(media) {
     return { type: types.ADD_MEDIA, media }
 }
 
-export function deleteMedia(id) {
-    return { type: types.DELETE_MEDIA, id }
+export function deleteMedia(media) {
+    return { type: types.DELETE_MEDIA, media }
 }
 
 export function fetchConfig(config){
     const params = '?media_id=' + config.mid
     return dispatch => {
         dispatch(requestPosts(config))
-            return fetch(config.path+params)
-                .then(response => response.json())
-                .then(json => dispatch(receivePosts(config, json)))
+            return fetch(config.path+params,{
+               credentials: 'same-origin'
+            }).then(response => response.json())
+            .then(json => dispatch(receivePosts(config, json)))
       }
+}
+export function addAlert(text){
+    return { type: types.ADD_ALERT, text}
+}
+
+export function deleteAlert(){
+    return { type: types.DELETE_ALERT}
 }

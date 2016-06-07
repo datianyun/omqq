@@ -4,7 +4,7 @@ var webConfig = require('./webpack.config.js');
 var del = require('del');
 var cssmin = require('gulp-cssmin');
 var rename = require('gulp-rename');
-
+var uglify = require('gulp-uglify')
 //清理文件
 gulp.task('clean', function(){
 	del('./dist/');
@@ -14,6 +14,7 @@ gulp.task('clean', function(){
 gulp.task('webpack', function() {
   return gulp.src('./src/js/entry')
   .pipe(webpack(webConfig))
+  .pipe(uglify())
   .pipe(gulp.dest('dist/js'));
 });
 

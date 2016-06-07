@@ -25,7 +25,20 @@ class Config extends Component {
       componentWillReceiveProps(nextProps) {
           if (nextProps.selectedMedia !== this.props.selectedMedia) {
               const { dispatch, selectedMedia } = nextProps
-              dispatch(TodoActions.fetchPostsIfNeeded(selectedMedia))
+              dispatch(TodoActions.fetchMediaIfNeeded(selectedMedia))
+          }
+          if(nextProps.alerts.info!==null){
+              const { dispatch} = nextProps
+              let alertInfo = nextProps.alerts.info +',添加失败'
+              Alert.error(alertInfo, {
+                  effect: '',
+                  position: 'top',
+                  timeout: 3000,
+                  onClose: function(e){
+                      Alert.closeAll();
+                  }
+              });
+              dispatch(TodoActions.deleteAlert())
           }
       }
       handleSave(){
@@ -33,18 +46,20 @@ class Config extends Component {
           const {getConfig,mails,medias,time} = this.props
           dataSet['media_id'] = parseInt(getConfig.mid)
           dataSet['email_start'] = time.startDate
-          dataSet['email_end'] = time.endDate
-          dataSet['email_list'] = ''
-          dataSet['sub_media_ids'] = ''
+          let emailList = []
+          let mediaList = []
           medias.forEach(function(media){
-              dataSet['sub_media_ids'] +=media.Fid + ','
+              mediaList.push(media.Fid)
           })
           mails.forEach(function(mail){
+              emailList.push(mail.text)
               dataSet['email_list'] +=mail.text+ ','
           })
-
+          dataSet['sub_media_ids']  = mediaList.join(',')
+          dataSet['email_list']  = emailList.join(',')
           fetch('/media/saveConfig', {
               method: 'POST',
+              credentials: 'same-origin',
               headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
               },
@@ -55,17 +70,18 @@ class Config extends Component {
               if(json.response.code===0){
                   let salert = Alert.info('保存成功', {
                       effect: '',
-                      position: 'top-right',
+                      position: 'top',
                       timeout: 3000,
                       offset: 100,
                       onClose: function(e){
                            Alert.close(salert);
                       }
                   });
+                  window.location.href="/media/mailList"
               }else{
-                  Alert.info(json.response.msg, {
+                  Alert.error(json.response.msg, {
                       effect: '',
-                      position: 'top-right',
+                      position: 'top',
                       timeout: 3000,
                       onClose: function(e){
                           Alert.closeAll();
@@ -75,7 +91,7 @@ class Config extends Component {
           }).catch(function(ex) {
               Alert.error(ex, {
                   effect: '',
-                  position: 'top-right',
+                  position: 'top',
                   timeout: 3000,
                   onClose: function(e){
                       Alert.closeAll();
@@ -84,8 +100,6 @@ class Config extends Component {
           })
       }
       render() {
-          console.log('render')
-          console.log(this.props)
           const {actions,mails,medias,time,getConfig} = this.props
           return (
               <div>
@@ -107,12 +121,13 @@ Config.propTypes = {
 
 
 function mapStateToProps(state) {
-    const {getConfig,selectedMedia,mails,medias,time} = state
+    const {getConfig,selectedMedia,mails,medias,time,alerts} = state
     return {
         getConfig: getConfig,
         selectedMedia: selectedMedia,
         mails: mails,
         time: time,
+        alerts: alerts,
         medias: medias
     }
 }

@@ -12,20 +12,6 @@ class Wrap extends Component {
                 classValue:'active',
                 url:'/media/mailList'
             }]
-        },
-        {
-            id: 2,
-            name:'配置',
-            classValue:'',
-            list:[{
-                name:'查询列表',
-                classValue:'',
-                url:'/media/index'
-            },{
-                name:'配置我的自媒体',
-                classValue:'',
-                url:'/media/index'
-            }]
         }]
         return (
             <div className="wrap">

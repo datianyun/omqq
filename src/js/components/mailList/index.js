@@ -17,7 +17,7 @@ class MailCon extends Component {
             <div className="main">
                 <Bread title='邮件配置'></Bread>
                 <Search type="search" selectMedia={selectMedia}></Search>
-                <MailTable lists={this.props.mediaObj} deleteMedia={this.props.actions.deleteMedia}></MailTable>
+                <MailTable type='search' lists={this.props.mediaObj} deleteMedia={this.props.actions.deleteMedia}></MailTable>
                 <Paging  options={options} selectMedia={selectMedia}></Paging>
             </div>
         )
