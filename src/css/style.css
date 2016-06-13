@@ -469,3 +469,14 @@ td.rdtYear:hover {
 	font-size: 1.2em;
 	margin-top: 37px;
 }
+
+/*-----媒体配置----*/
+.input-group-btn .btn-secondary{
+    margin: 0 10px;
+}
+.input-group-btn .link{
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    display: inline-block;
+}

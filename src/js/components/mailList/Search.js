@@ -1,5 +1,6 @@
 import React, {PropTypes, Component} from 'react'
 import classnames from 'classnames'
+import {throttle} from '../../lib/param'
 var Alert = require('react-s-alert').default
 class Search extends Component {
     constructor(props, context) {
@@ -76,9 +77,7 @@ class Search extends Component {
                         <input type="text"  className="form-control" placeholder={placeholder} onChange={this.handleChange.bind(this)}></input>
                     </div>
                     <div className="input-group-btn">
-                        <button type="button" className=""className={classnames({
-                            'btn btn-primary search':true
-                        })} onClick={this.handleSearch.bind(this)}>{ButtonText}</button>
+                        <button type="button" className="btn btn-primary search" onClick={this.handleSearch.bind(this)}>{ButtonText}</button>
                     </div>
                 </div>
             </div>
