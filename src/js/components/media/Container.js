@@ -21,12 +21,12 @@ class Container extends Component {
             list:[{
                 name:'媒体配置',
                 classValue:'active',
-                url:'/media/mailList'
+                url:'/media/mediaBdConfig'
             },
             {
                 name:'数据查询',
                 classValue:'',
-                url:'/media/mailList'
+                url:'/media/mediaBdManage'
             }]
         }]
         let breadTitle = '媒体配置'

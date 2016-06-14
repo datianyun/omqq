@@ -71,7 +71,6 @@ class Search extends Component {
                     effect: '',
                     position: 'top',
                     timeout: 3000,
-                    offset: 100,
                     onClose: function(e){
                          Alert.close(salert);
                     }

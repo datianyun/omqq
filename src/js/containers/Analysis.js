@@ -2,7 +2,7 @@ import React, {Component,PropTypes} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import Header from '../components/common/Header'
-import Wrap from '../components/media/container'
+import Wrap from '../components/media/Container'
 import Footer from '../components/common/Footer'
 import * as TodoActions from '../actions'
 import 'react-s-alert/dist/s-alert-default.css';
