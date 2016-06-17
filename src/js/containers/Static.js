@@ -2,22 +2,19 @@ import React, {Component,PropTypes} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import Header from '../components/common/Header'
-import Wrap from '../components/media/Center'
+import Wrap from '../components/media/Static'
 import Footer from '../components/common/Footer'
 import * as TodoActions from '../actions'
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 import Alert from 'react-s-alert';
-class Frame extends Component {
+class Static extends Component {
     constructor(props) {
         super(props)
     }
 
     componentDidMount() {
-        const { dispatch, selectedMedia } = this.props
-        selectedMedia.path = '/media/mediaBdList'
-        selectedMedia.type = 'analysis'
-        dispatch(TodoActions.fetchPostsIfNeeded(selectedMedia))
+
     }
 
     componentWillReceiveProps(nextProps) {
@@ -28,19 +25,18 @@ class Frame extends Component {
     }
 
     render() {
-        console.log(this.props)
-        const {posts,actions,total,selectedMedia,analysis} = this.props
+        const {posts,actions,total,selectedMedia} = this.props
         return (
             <div>
-                <Wrap analysis={analysis} actions={actions} posts={posts} selectedMedia={selectedMedia} total={total}></Wrap>
+                <Wrap actions={actions} posts={posts} selectedMedia={selectedMedia} total={total}></Wrap>
                 <Footer></Footer>
                 <Alert stack={{limit: 3}} />
-            </div>
+             </div>
         )
     }
 }
 
-Frame.propTypes = {
+Static.propTypes = {
     actions: PropTypes.object.isRequired,
     selectedMedia: PropTypes.object.isRequired,
     posts: PropTypes.array.isRequired,
@@ -58,8 +54,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-    const {selectedMedia, postsByMedia,analysis} = state
-    const pkey = selectedMedia.currentPage + '-' +selectedMedia.search + '-' +selectedMedia.key
+    const {selectedMedia, postsByMedia} = state
+    const pkey = selectedMedia.currentPage + '-' + selectedMedia.key
     const {isFetching,lastUpdated,items: posts,total} = postsByMedia[pkey] || {
         isFetching: true,
         items: []
@@ -68,7 +64,6 @@ function mapStateToProps(state) {
         selectedMedia,
         posts,
         total,
-        analysis,
         isFetching,
         lastUpdated
     }
@@ -77,4 +72,4 @@ function mapStateToProps(state) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Frame)
+)(Static)

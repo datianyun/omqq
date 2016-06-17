@@ -1,10 +1,15 @@
 import React, {PropTypes, Component} from 'react'
 import 'whatwg-fetch'
 var Alert = require('react-s-alert').default
+import 'whatwg-fetch'
 import {params} from '../../lib/param'
+
 class MailTable extends Component {
     constructor(props, context) {
         super(props, context)
+        this.state = {
+            key :''
+        }
     }
     handleDelete(e){
         let target = e.target;
@@ -16,14 +21,87 @@ class MailTable extends Component {
         })
     }
     handleClick(e){
-
+        let target = e.currentTarget
+        let cname = target.className
+        let reg_email = target.parentNode.parentNode.childNodes[4].textContent
+        let bd_owner = this.state.key
+        let dataSet = []
+        dataSet['reg_email'] = reg_email
+        dataSet['bd_owner'] = bd_owner
+        if(cname === 'claim') {
+            fetch('/media/mediaBdBinding', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                  'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: params(dataSet)
+            }).then(function(response) {
+                return response.json()
+            }).then(function(json) {
+                if(json.response.code===0){
+                    let salert = Alert.info('保存成功', {
+                        effect: '',
+                        position: 'top',
+                        timeout: 3000,
+                        onClose: function(e){
+                             Alert.close(salert);
+                        }
+                    });
+                    window.location.href="/media/mediaBdManage"
+                }else{
+                    Alert.error(json.response.msg, {
+                        effect: '',
+                        position: 'top',
+                        timeout: 3000,
+                        onClose: function(e){
+                            Alert.closeAll();
+                        }
+                    });
+                }
+            }).catch(function(ex) {
+                Alert.error(ex, {
+                    effect: '',
+                    position: 'top',
+                    timeout: 3000,
+                    onClose: function(e){
+                        Alert.closeAll();
+                    }
+                 });
+            })
+        }
+    }
+    handleChange(e){
+        this.setState({ key: e.target.value.trim()})
     }
     renderButton(item){
         let buttons=[]
+        let opt = item['Fbinding_str']
+        for(let i=0;i<opt.length;i++){
+            if(opt[i]==='claim'){
+                buttons.push({
+                    className:'claim',
+                    value:'认领',
+                    type:'input'
+                })
+            }else if(opt[i] ==='claimedByThis'){
+                buttons.push({
+                    className:'claimedByThis',
+                    value:'已被认领到该业务',
+                    type:'text'
+                })
+            }else if(opt[i] ==='claimedByOther'){
+                buttons.push({
+                    className:'clear',
+                    value:'已被认领到其他业务',
+                    type:'text'
+                })
+            }
+        }
         return(
-            <td data-id={item['Fid']} onClick={this.handleClick.bind(this)}>
+            <td data-id={item['Fid']}>
                 {buttons.map((btn,i)=>
-                    <a key={i} className={btn.className}>{btn.value}</a>
+                    <a key={i} className={btn.className} onClick={this.handleClick.bind(this)}>{btn.value}</a>
                 )}
             </td>
         )
@@ -45,16 +123,15 @@ class MailTable extends Component {
         )
     }
     renderOwner(item){
-        if(item['Fbd_owner'] =='') {
-            return (
-                <td><input type="text" value={item['Fbd_owner']}></input></td>
-            )
-        } else {
+        if(item['Fif_bd'] =='1') {
             return (
                 <td>{item['Fbd_owner']}</td>
             )
+        } else {
+            return (
+                <td className="owner"><input type="text" onChange={this.handleChange.bind(this)}></input></td>
+            )
         }
-
     }
     renderTBODY(ITEM){
         return (

@@ -1,4 +1,4 @@
-import { ADD_MAIL, DELETE_MAIL, ADD_MEDIA, DELETE_MEDIA, GET_CONFIG,ADD_CONFIG,ADD_TIME, ADD_ALERT,DELETE_ALERT} from '../constants/ActionTypes'
+import { ADD_MAIL, DELETE_MAIL, ADD_MEDIA, DELETE_MEDIA, GET_CONFIG,ADD_CONFIG,ADD_TIME, ADD_ALERT,DELETE_ALERT,ADD_ANALYSIS} from '../constants/ActionTypes'
 import {addAlert} from '../actions/index'
 import moment from 'moment'
 const initialState = []
@@ -132,8 +132,21 @@ export function medias(state = initialState, action) {
             return state.filter(media =>
                 media.mid !== action.media.id
             )
-
         default:
             return state
         }
+}
+export function analysis(state = {
+    status:[],
+    catalog:[]
+}, action) {
+    switch (action.type) {
+        case ADD_ANALYSIS:
+            return {
+                status: action.status,
+                catalog:action.catalog
+            }
+        default:
+            return state
+    }
 }

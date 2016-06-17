@@ -9,7 +9,8 @@ module.exports = {
       login: ['./src/js/entry/login.js'],
       media: ['./src/js/entry/media.js'],
       data: ['./src/js/entry/data.js'],
-      system: ['./src/js/entry/system.js']
+      system: ['./src/js/entry/system.js'],
+      static: ['./src/js/entry/static.js']
   },
   output: {
     path: path.join(__dirname, 'dist'),

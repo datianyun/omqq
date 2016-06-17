@@ -2,7 +2,7 @@ import React, {PropTypes, Component} from 'react'
 import Menu from '../common/Menu'
 import MailCon from './index'
 import Bread from '../common/Bread'
-import Wizard from '../common/Wizard'
+
 import AddMail from './AddMail'
 import AddMedia from './AddMedia'
 import SendMail from './SendMail'

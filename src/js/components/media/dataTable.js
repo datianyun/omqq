@@ -1,7 +1,9 @@
 import React, {PropTypes, Component} from 'react'
 import 'whatwg-fetch'
 var Alert = require('react-s-alert').default
+import 'whatwg-fetch'
 import {params} from '../../lib/param'
+
 class DataTable extends Component {
     constructor(props, context) {
         super(props, context)
@@ -16,15 +18,54 @@ class DataTable extends Component {
         })
     }
     handleClick(e){
-
+        let id = parseInt(e.currentTarget.dataset.id)
+        let dataSet = []
+        dataSet['media_id'] = id
+        fetch('/media/mediaBdUnbundling', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: params(dataSet)
+        }).then(function(response) {
+            return response.json()
+        }).then(function(json) {
+            if(json.response.code===0){
+                let salert = Alert.info('保存成功', {
+                    effect: '',
+                    position: 'top',
+                    timeout: 3000,
+                    onClose: function(e){
+                         Alert.close(salert);
+                    }
+                });
+                window.location.href="/media/mediaBdManage"
+            }else{
+                Alert.error(json.response.msg, {
+                    effect: '',
+                    position: 'top',
+                    timeout: 3000,
+                    onClose: function(e){
+                        Alert.closeAll();
+                    }
+                });
+            }
+        }).catch(function(ex) {
+            Alert.error(ex, {
+                effect: '',
+                position: 'top',
+                timeout: 3000,
+                onClose: function(e){
+                    Alert.closeAll();
+                }
+             });
+        })
     }
     renderButton(item){
-        let buttons=[]
         return(
             <td data-id={item['Fid']} onClick={this.handleClick.bind(this)}>
-                {buttons.map((btn,i)=>
-                    <a key={i} className={btn.className}>{btn.value}</a>
-                )}
+                <a>清除</a>
             </td>
         )
     }
@@ -48,18 +89,6 @@ class DataTable extends Component {
             </tr>
         )
     }
-    renderOwner(item){
-        if(item['Fbd_owner'] =='') {
-            return (
-                <td><input type="text" value={item['Fbd_owner']}></input></td>
-            )
-        } else {
-            return (
-                <td>{item['Fbd_owner']}</td>
-            )
-        }
-
-    }
     renderTBODY(ITEM){
         return (
             <tbody className="mediaList">
@@ -73,7 +102,11 @@ class DataTable extends Component {
                         <td>{item['Fcatalog_value']}</td>
                         <td>{item['Fmms_catalog']}</td>
                         <td>{item['Fstatus_value']}</td>
-                        {this.renderOwner(item)}
+                        <td>{item['Freadpv']}</td>
+                        <td>{item['Frecommend']}</td>
+                        <td>{item['Ffans']}</td>
+                        <td>{item['Fbd_owner']}</td>
+                        <td ><a href={"/media/statisticsManage?media_id="+item['Fid']}>查看</a></td>
                         {this.renderButton(item)}
                     </tr>
                 )}

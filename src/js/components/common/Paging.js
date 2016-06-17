@@ -14,7 +14,8 @@ class Paging extends Component {
             currentPage:data.currentPage,
             path:data.path,
             type:data.type,
-            perNum:data.perNum
+            perNum:data.perNum,
+            search:data.search
         }
         if(cname.indexOf('disagble')!==-1){
             return

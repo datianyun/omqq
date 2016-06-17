@@ -8,7 +8,6 @@ class SendMail extends Component {
         this.state = {
             startDate: moment()
         };
-
     }
     handleApply(event, picker) {
         this.setState({
@@ -32,8 +31,7 @@ class SendMail extends Component {
         if(this.props.time.type==='const') {
             start += '(有效期90天)'
         }
-        let label = start;
-
+        let label = start
         let locale = {
             format: 'YYYY-MM-DD',
             separator: ' - ',

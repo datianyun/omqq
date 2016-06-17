@@ -1,0 +1,19 @@
+{
+    response: {
+        code: 0,
+        msg: ""
+    },
+    data: {
+        count: 1,
+        page: "1",
+        size: "2",
+        list: [{
+            articleId: "20160413A00OR800",
+            exposure: 6953795,
+            read: 1030470,
+            collect: "1042",
+            relay: "207",
+            postil: "0"
+        }]
+    }
+}

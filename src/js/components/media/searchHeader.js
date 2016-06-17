@@ -4,49 +4,98 @@ import {throttle} from '../../lib/param'
 import Alert from 'react-s-alert'
 import 'whatwg-fetch'
 
-class Search extends Component {
+class SearchHeader extends Component {
     constructor(props, context) {
         super(props, context)
         this.state = {
-            key :''
+            key :'',
+            status:'all',
+            catalog:'all',
+            order:0
         }
-    }
-    validateAdd(){
-        let reg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/g
-        if(!reg.test(this.state.key)){
-            Alert.error('邮箱格式错误', {
-                effect: '',
-                position: 'top',
-                timeout: 3000,
-                onClose: function(e){
-                    Alert.closeAll();
-                }
-             });
-             return false
-        }
-        return true
     }
     handleSearch(e){
-        if(!this.validateAdd()){
-            return;
-        }
+        let search = '&media_status='+this.state.status+'&catalog_map='+this.state.catalog+'&order='+this.state.order
         let initialState = {
             type: this.props.type,
             key : this.state.key,
-            path:'/media/mediaBdSearch',
+            path:'/media/mediaBdDataSearch',
             currentPage:1,
-            perNum:5
+            perNum:5,
+            search:search
         }
-        //解决搜索不存在media后删除输入返回原先数据的问题
-        if(initialState.key == ''){
-            initialState.path = '/media/mediaBdSearch'
+        this.props.selectMedia(initialState)
+    }
+    triggerSearch(search){
+        let initialState = {
+            type: this.props.type,
+            key : this.state.key,
+            path:'/media/mediaBdDataSearch',
+            currentPage:1,
+            perNum:5,
+            search:search
         }
         this.props.selectMedia(initialState)
     }
     handleChange(e){
         this.setState({ key: e.target.value.trim()})
     }
-
+    handleStatus(e){
+        let value = e.target.value.trim()
+        this.setState({ status: value})
+        let search = '&media_status='+ value +'&catalog_map='+this.state.catalog+'&order='+this.state.order
+        this.triggerSearch(search)
+    }
+    handleCatalog(e){
+        let value = e.target.value.trim()
+        this.setState({ catalog: value})
+        let search = '&media_status='+ this.state.status +'&catalog_map='+value+'&order='+this.state.order
+        this.triggerSearch(search)
+    }
+    handleOrder(e){
+        let value = e.target.value.trim()
+        this.setState({ order: value})
+        let search = '&media_status='+ this.state.status +'&catalog_map='+this.state.catalog+'&order='+value
+        this.triggerSearch(search)
+    }
+    renderStatus(data){
+        let arr = [{
+            value:'all',
+            text:'全部运营状态'
+        }];
+        for (let key in data) {
+            arr.push({
+                value:key,
+                text:data[key]
+            })
+        }
+        return(
+            <select  name="select" className="form-control input-sm" onChange={this.handleStatus.bind(this)}>
+                {arr.map((status,i)=>
+                    <option key={i} value={status.value}>{status.text}</option>
+                )}
+            </select>
+        )
+    }
+    renderCatalog(data){
+        let arr = [{
+            value:'all',
+            text:'全部运营分类'
+        }];
+        for (let key in data) {
+            arr.push({
+                value:key,
+                text:data[key]
+            })
+        }
+        return(
+            <select  name="select" className="form-control input-sm" onChange={this.handleCatalog.bind(this)}>
+                {arr.map((status,i)=>
+                    <option key={i} value={status.value}>{status.text}</option>
+                )}
+            </select>
+        )
+    }
     render() {
         let ButtonText = '搜索'
         let placeholder = '媒体ID/媒体名称/注册邮箱/拓展人员RTX'
@@ -54,28 +103,10 @@ class Search extends Component {
             <div className="breadcrumb-mod">
                 <div className="userBread clearfix">
                     <div className="expNameCon form-section">
-                        <select  name="select" className="form-control input-sm" >
-                            <option value="0">运营分类</option>
-                            <option value="-1">已删除</option>
-                            <option value="1">未审核</option>
-                            <option value="2">已发布</option>
-                            <option value="3">未通过</option>
-                            <option value="4">已结束</option>
-                            <option value="5">已撤回</option>
-                            <option value="8">已发文</option>
-                        </select>
+                        {this.renderStatus(this.props.config.status)}
                     </div>
                     <div className="expNameCon form-section">
-                        <select  name="select" className="form-control input-sm">
-                            <option value="0">运营状态</option>
-                            <option value="-1">已删除</option>
-                            <option value="1">未审核</option>
-                            <option value="2">已发布</option>
-                            <option value="3">未通过</option>
-                            <option value="4">已结束</option>
-                            <option value="5">已撤回</option>
-                            <option value="8">已发文</option>
-                        </select>
+                        {this.renderCatalog(this.props.config.catalog)}
                     </div>
                     <div className="expNameCon data">
                         <input type="text"  className="form-control" placeholder={placeholder} onChange={this.handleChange.bind(this)}></input>
@@ -85,7 +116,7 @@ class Search extends Component {
 
                     </div>
                     <div className="option">
-                        <select  name="select" className="form-control input-sm">
+                        <select  name="select" className="form-control input-sm" onChange={this.handleOrder.bind(this)}>
                             <option value="0">总阅读数从高到低排序</option>
                             <option value="1">总阅读数从低到高排序</option>
                             <option value="2">总推荐数从高到低排序</option>
@@ -100,9 +131,10 @@ class Search extends Component {
     }
 }
 
-Search.propTypes = {
+SearchHeader.propTypes = {
     type: PropTypes.string.isRequired,
+    config: PropTypes.object.isRequired,
     selectMedia: PropTypes.func.isRequired
 }
 
-export default Search
+export default SearchHeader

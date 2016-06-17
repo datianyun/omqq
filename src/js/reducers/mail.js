@@ -1,4 +1,4 @@
-import {SELECT_MEDIA, INVALIDATE_MAIL,REQUEST_POSTS, RECEIVE_POSTS, DELETE_MEDIA, ADD_MEDIA} from '../constants/ActionTypes'
+import {SELECT_MEDIA, INVALIDATE_MAIL,REQUEST_POSTS, RECEIVE_POSTS, DELETE_MEDIA, ADD_MEDIA,ADD_ANALYSIS} from '../constants/ActionTypes'
 
 const initialState = {
     key:'',
@@ -40,6 +40,14 @@ function posts(state = {
             total: action.total,
             lastUpdated: action.receivedAt
          })
+     case ADD_ANALYSIS:
+         return Object.assign({}, state, {
+             isFetching: false,
+             didInvalidate: false,
+             items: action.posts,
+             total: action.total,
+             lastUpdated: action.receivedAt
+          })
     default:
       return state
   }
@@ -51,8 +59,16 @@ export function postsByMedia(state = {}, action) {
       case RECEIVE_POSTS:
       case REQUEST_POSTS:
           let pkey = action.media.currentPage + '-' + action.media.key
+          if(action.media.search !== undefined){
+              pkey = action.media.currentPage + '-' +action.media.search + '-' +action.media.key
+          }
           return Object.assign({}, state, {
              [pkey]: posts(state[action.media], action)
+          })
+      case ADD_ANALYSIS:
+          let rkey = action.media.currentPage + '-' +action.media.search + '-' +action.media.key
+          return Object.assign({}, state, {
+             [rkey]: posts(state[action.media], action)
           })
       default:
           return state

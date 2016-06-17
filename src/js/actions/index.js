@@ -39,7 +39,17 @@ function receivePosts(media, json) {
             total: json.data.count,
             receivedAt: Date.now()
         }
-    } else{
+    } else if(media.type==="analysis"){
+        return {
+            type: types.ADD_ANALYSIS,
+            media,
+            status: json.data.media_status,
+            catalog: json.data.catalog_map,
+            posts: json.data.list,
+            total: json.data.count,
+            receivedAt: Date.now()
+        }
+    } else {
         return {
             type: types.ADD_CONFIG,
             media,
@@ -49,19 +59,25 @@ function receivePosts(media, json) {
     }
 }
 
-function fetchPosts(media) {
-    const params='?keyword=' + media.key + '&page=' + media.currentPage + '&size=' + media.perNum
+export function fetchPosts(media) {
+    let params='?keyword=' + media.key + '&page=' + media.currentPage + '&size=' + media.perNum
+    if(media.search!==undefined){
+        params += media.search
+    }
     return dispatch => {
         dispatch(requestPosts(media))
             return fetch(media.path+params,{
                credentials: 'same-origin'
             }).then(response => response.json())
-                .then(json => dispatch(receivePosts(media, json)))
-      }
+            .then(json => dispatch(receivePosts(media, json)))
+    }
 }
 
 function shouldFetchPosts(state, media) {
-    const pkey = media.currentPage + '-' + media.key
+    let pkey = media.currentPage + '-' + media.key
+    if(media.search !== undefined){
+        pkey = media.currentPage + '-' +media.search + '-' +media.key
+    }
     const posts = state.postsByMedia[pkey]
     if (!posts) {
         return true

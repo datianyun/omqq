@@ -16,7 +16,8 @@ class AddMedia extends Component {
             return false
         } else {
             return true
-        }
+        }+
+        320
     }
     render() {
         return (

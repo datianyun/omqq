@@ -1,7 +1,7 @@
 import React, {PropTypes, Component} from 'react'
 import Menu from '../common/Menu'
 import Bread from '../common/Bread'
-import Search from './SearchHeader'
+import SearchHeader from './SearchHeader'
 import DataTable from './DataTable'
 import Paging from '../common/Paging'
 class Container extends Component {
@@ -32,7 +32,7 @@ class Container extends Component {
         }]
         let breadTitle = '数据查询'
         const {selectMedia} = this.props.actions
-        const options = Object.assign({},selectMedia,{
+        const options = Object.assign({},this.props.selectedMedia,{
             total:this.props.total
         })
         return (
@@ -44,7 +44,7 @@ class Container extends Component {
                         </div>
                         <div className="main">
                             <Bread title={breadTitle}></Bread>
-                            <Search type="search" selectMedia={selectMedia}></Search>
+                            <SearchHeader config={this.props.analysis} type="search" selectMedia={selectMedia}></SearchHeader>
                             <DataTable  lists={this.props.posts}></DataTable>
                             <Paging  options={options} selectMedia={selectMedia}></Paging>
                         </div>
@@ -59,6 +59,7 @@ Container.propTypes = {
     actions: PropTypes.object.isRequired,
     posts: PropTypes.array.isRequired,
     total:PropTypes.string,
+    analysis:PropTypes.object,
     selectedMedia:PropTypes.object.isRequired
 }
 
