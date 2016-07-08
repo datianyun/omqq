@@ -1,17 +1,22 @@
 var path = require('path')
+var fs = require('fs')
 var webpack = require('webpack')
 var env = process.env.NODE_ENV
+var EXAMPLES_DIR = path.resolve(__dirname, 'src/js/entry');
+
+function isDirectory(dir) {
+    return fs.lstatSync(dir).isDirectory();
+}
+
+function buildEntries() {
+    return fs.readdirSync(EXAMPLES_DIR).reduce(function (entries, dir) {
+        var name = dir.split(".")[0];
+        entries[name] = path.join(EXAMPLES_DIR, dir);
+        return entries;
+        }, {});
+}
 var config = {
-    //devtool: 'cheap-module-eval-source-map',
-    entry: {
-        //login: ['./src/js/entry/login.js','webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr'],
-        //system: ['./src/js/entry/system.js','webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr']
-        index: ['./src/js/entry/login.js'],
-        media: ['./src/js/entry/media.js'],
-        data: ['./src/js/entry/data.js'],
-        config: ['./src/js/entry/system.js'],
-        static: ['./src/js/entry/static.js']
-    },
+    entry: buildEntries(),
     output: {
         path: path.join(__dirname, 'dist'),
         filename: '[name].bundle.js',
@@ -23,6 +28,7 @@ var config = {
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(env)
         }),
+
         new webpack.NoErrorsPlugin()
     ],
     module: {
