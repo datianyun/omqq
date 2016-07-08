@@ -8,6 +8,13 @@ export function selectMedia(media) {
     }
 }
 
+export function selectArticle(media) {
+    return {
+        type: types.SELECT_ARTICLE,
+        media
+    }
+}
+
 export function invalidateMail(media) {
     return {
         type: types.INVALIDATE_MAIL,
@@ -23,13 +30,32 @@ function requestPosts(media) {
 }
 
 function receivePosts(media, json) {
-    if(media.type==="search"){
+    if(json.response.code === -1){
         return {
-            type: types.RECEIVE_POSTS,
+            type: types.ADD_ALERT,
             media,
-            posts: json.data.list,
-            total: json.data.count,
+            alerts:json.response,
             receivedAt: Date.now()
+        }
+    }
+    if(media.type==="search"){
+        if(json.data.quyu_catalog){
+            return {
+                type: types.RECEIVE_POSTS,
+                media,
+                posts: json.data.list,
+                total: json.data.count,
+                catalog:json.data.quyu_catalog,
+                receivedAt: Date.now()
+            }
+        } else {
+            return {
+                type: types.RECEIVE_POSTS,
+                media,
+                posts: json.data.list,
+                total: json.data.count,
+                receivedAt: Date.now()
+            }
         }
     } else if(media.type==="add") {
         return {
@@ -45,6 +71,36 @@ function receivePosts(media, json) {
             media,
             status: json.data.media_status,
             catalog: json.data.catalog_map,
+            posts: json.data.list,
+            total: json.data.count,
+            quyuCata: json.data.quyu_catalog,
+            receivedAt: Date.now()
+        }
+    } else if(media.type==="statics"){
+        return {
+            type: types.ADD_STATICS,
+            media,
+            posts: json.data.list_total,
+            articles:json.data.list_article,
+            read: json.data.read,
+            recommend: json.data.recommend,
+            fans: json.data.fans,
+            total: json.data.count_total,
+            count: json.data.count_article,
+            receivedAt: Date.now()
+        }
+    } else if(media.type==="article"){
+        return {
+            type: types.ADD_ARTICLE,
+            media,
+            articles: json.data.list,
+            count: json.data.count,
+            receivedAt: Date.now()
+        }
+    } else if(media.type==="refreshStatic"){
+        return {
+            type: types.REFRESH_STATICS,
+            media,
             posts: json.data.list,
             total: json.data.count,
             receivedAt: Date.now()
@@ -76,7 +132,7 @@ export function fetchPosts(media) {
 function shouldFetchPosts(state, media) {
     let pkey = media.currentPage + '-' + media.key
     if(media.search !== undefined){
-        pkey = media.currentPage + '-' +media.search + '-' +media.key
+        pkey = media.currentPage + '-' +media.search + '-' +media.key+'-'+media.path
     }
     const posts = state.postsByMedia[pkey]
     if (!posts) {

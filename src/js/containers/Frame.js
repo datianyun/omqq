@@ -26,7 +26,6 @@ class Frame extends Component {
     }
 
     render() {
-        
         const {posts,actions,total,selectedMedia} = this.props
         return (
             <div>
@@ -46,7 +45,6 @@ Frame.propTypes = {
     lastUpdated: PropTypes.number,
     dispatch: PropTypes.func.isRequired
 }
-
 
 function mapDispatchToProps(dispatch) {
     return {

@@ -14,7 +14,13 @@ class Static extends Component {
     }
 
     componentDidMount() {
-
+        const { dispatch, selectedMedia,selectedArticle } = this.props
+        let id = /(([^?&=]+)(?:=([^?&=]*))*)/g.exec(window.location.search)[3]
+        //请求自媒体的详细信息接口
+        selectedMedia.search = '&id='+id
+        selectedMedia.path = '/media/mediaStatistic'
+        selectedMedia.type = 'statics'
+        dispatch(TodoActions.fetchPostsIfNeeded(selectedMedia))
     }
 
     componentWillReceiveProps(nextProps) {
@@ -22,16 +28,20 @@ class Static extends Component {
             const { dispatch, selectedMedia } = nextProps
             dispatch(TodoActions.fetchPostsIfNeeded(selectedMedia))
         }
+        if (nextProps.selectedArticle !== this.props.selectedArticle) {
+            const { dispatch, selectedArticle } = nextProps
+            dispatch(TodoActions.fetchPostsIfNeeded(selectedArticle))
+        }
     }
 
     render() {
-        const {posts,actions,total,selectedMedia} = this.props
+        const {actions,selectedMedia,statics,selectedArticle,articles,articleData,isAdmin} = this.props
         return (
             <div>
-                <Wrap actions={actions} posts={posts} selectedMedia={selectedMedia} total={total}></Wrap>
+                <Wrap isAdmin={isAdmin} articleData={articleData} statics={statics} actions={actions} articles={articles} selectedMedia={selectedMedia} selectedArticle={selectedArticle}></Wrap>
                 <Footer></Footer>
                 <Alert stack={{limit: 3}} />
-             </div>
+            </div>
         )
     }
 }
@@ -39,9 +49,6 @@ class Static extends Component {
 Static.propTypes = {
     actions: PropTypes.object.isRequired,
     selectedMedia: PropTypes.object.isRequired,
-    posts: PropTypes.array.isRequired,
-    isFetching: PropTypes.bool.isRequired,
-    lastUpdated: PropTypes.number,
     dispatch: PropTypes.func.isRequired
 }
 
@@ -54,18 +61,29 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-    const {selectedMedia, postsByMedia} = state
-    const pkey = selectedMedia.currentPage + '-' + selectedMedia.key
-    const {isFetching,lastUpdated,items: posts,total} = postsByMedia[pkey] || {
-        isFetching: true,
+    const {selectedMedia, postsByMedia,statics,selectedArticle,articles,articleData} = state
+    const isAdmin = g_userInfo.admin
+    const pkey = selectedMedia.currentPage + '-' +selectedMedia.search + '-' +selectedMedia.key + '-' + selectedMedia.path
+    const {items:sposts} = postsByMedia[pkey] || {
         items: []
+    }
+    if(sposts&&sposts.length!==0){
+        statics.posts = sposts
+    }
+    const akey = selectedArticle.currentPage + '-' +selectedArticle.search + '-' +selectedArticle.key + '-' + selectedArticle.path
+    const {items:aposts} = postsByMedia[akey] || {
+        items: []
+    }
+    if(aposts&&aposts.length!==0){
+        articles.posts = aposts
     }
     return {
         selectedMedia,
-        posts,
-        total,
-        isFetching,
-        lastUpdated
+        selectedArticle,
+        articles,
+        isAdmin,
+        articleData,
+        statics
     }
 }
 

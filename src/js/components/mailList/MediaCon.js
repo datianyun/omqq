@@ -43,6 +43,20 @@ class MediaCon extends Component {
                 classValue:'active',
                 url:'/media/mailList'
             }]
+        },{
+            id: 2,
+            name:'数据',
+            classValue:'',
+            list:[{
+                name:'媒体配置',
+                classValue:'',
+                url:'/media/mediaBdConfig'
+            },
+            {
+                name:'数据查询',
+                classValue:'',
+                url:'/media/mediaBdManage'
+            }]
         }]
         const comp = [this.renderAddMail.bind(this),this.renderAddMedia.bind(this),this.renderSendMail.bind(this)]
         let breadTitle = '邮件配置 > ' + this.props.getConfig.Fname

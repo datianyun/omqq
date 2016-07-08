@@ -8,6 +8,7 @@ import * as TodoActions from '../actions'
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 import Alert from 'react-s-alert';
+
 class Frame extends Component {
     constructor(props) {
         super(props)
@@ -22,13 +23,27 @@ class Frame extends Component {
             const { dispatch, selectedMedia } = nextProps
             dispatch(TodoActions.fetchPostsIfNeeded(selectedMedia))
         }
+        if(nextProps.alerts.info!==null){
+            const { dispatch} = nextProps
+            let alertInfo = nextProps.alerts.info +',添加失败'
+            Alert.error(alertInfo, {
+                effect: '',
+                position: 'top',
+                timeout: 3000,
+                onClose: function(e){
+                    Alert.closeAll();
+                }
+            });
+            dispatch(TodoActions.deleteAlert())
+        }
     }
 
     render() {
-        const {posts,actions,total,selectedMedia} = this.props
+        const {posts,actions,total,selectedMedia,mediaCata,isAdmin} = this.props
+
         return (
             <div>
-                <Wrap actions={actions} posts={posts} selectedMedia={selectedMedia} total={total}></Wrap>
+                <Wrap isAdmin={isAdmin} actions={actions} posts={posts} catalog={mediaCata} selectedMedia={selectedMedia} total={total}></Wrap>
                 <Footer></Footer>
                 <Alert stack={{limit: 3}} />
              </div>
@@ -54,9 +69,10 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-    const {selectedMedia, postsByMedia} = state
+    const {selectedMedia, postsByMedia,alerts} = state
+    const isAdmin = g_userInfo.admin
     const pkey = selectedMedia.currentPage + '-' + selectedMedia.key
-    const {isFetching,lastUpdated,items: posts,total} = postsByMedia[pkey] || {
+    const {isFetching,lastUpdated,items: posts,total,catalog:mediaCata} = postsByMedia[pkey] || {
         isFetching: true,
         items: []
     }
@@ -64,6 +80,9 @@ function mapStateToProps(state) {
         selectedMedia,
         posts,
         total,
+        alerts,
+        isAdmin,
+        mediaCata,
         isFetching,
         lastUpdated
     }

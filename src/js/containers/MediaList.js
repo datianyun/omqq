@@ -28,11 +28,10 @@ class Frame extends Component {
     }
 
     render() {
-        console.log(this.props)
-        const {posts,actions,total,selectedMedia,analysis} = this.props
+        const {posts,actions,total,selectedMedia,analysis,isAdmin} = this.props
         return (
             <div>
-                <Wrap analysis={analysis} actions={actions} posts={posts} selectedMedia={selectedMedia} total={total}></Wrap>
+                <Wrap isAdmin={isAdmin} analysis={analysis} actions={actions} posts={posts} selectedMedia={selectedMedia} total={total}></Wrap>
                 <Footer></Footer>
                 <Alert stack={{limit: 3}} />
             </div>
@@ -59,7 +58,8 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
     const {selectedMedia, postsByMedia,analysis} = state
-    const pkey = selectedMedia.currentPage + '-' +selectedMedia.search + '-' +selectedMedia.key
+    const isAdmin = g_userInfo.admin
+    const pkey = selectedMedia.currentPage + '-' +selectedMedia.search + '-' +selectedMedia.key+ '-' + selectedMedia.path
     const {isFetching,lastUpdated,items: posts,total} = postsByMedia[pkey] || {
         isFetching: true,
         items: []
@@ -68,6 +68,7 @@ function mapStateToProps(state) {
         selectedMedia,
         posts,
         total,
+        isAdmin,
         analysis,
         isFetching,
         lastUpdated

@@ -11,7 +11,8 @@ class SearchHeader extends Component {
             key :'',
             status:'all',
             catalog:'all',
-            order:0
+            quyu:'all',
+            order:4
         }
     }
     handleSearch(e){
@@ -21,7 +22,7 @@ class SearchHeader extends Component {
             key : this.state.key,
             path:'/media/mediaBdDataSearch',
             currentPage:1,
-            perNum:5,
+            perNum:10,
             search:search
         }
         this.props.selectMedia(initialState)
@@ -32,7 +33,7 @@ class SearchHeader extends Component {
             key : this.state.key,
             path:'/media/mediaBdDataSearch',
             currentPage:1,
-            perNum:5,
+            perNum:10,
             search:search
         }
         this.props.selectMedia(initialState)
@@ -43,19 +44,25 @@ class SearchHeader extends Component {
     handleStatus(e){
         let value = e.target.value.trim()
         this.setState({ status: value})
-        let search = '&media_status='+ value +'&catalog_map='+this.state.catalog+'&order='+this.state.order
+        let search = '&media_status='+ value +'&catalog_map='+this.state.catalog+'&order='+this.state.order+'&quyu_catalog='+this.state.quyu
         this.triggerSearch(search)
     }
     handleCatalog(e){
         let value = e.target.value.trim()
         this.setState({ catalog: value})
-        let search = '&media_status='+ this.state.status +'&catalog_map='+value+'&order='+this.state.order
+        let search = '&media_status='+ this.state.status +'&catalog_map='+value+'&order='+this.state.order+'&quyu_catalog='+this.state.quyu
+        this.triggerSearch(search)
+    }
+    handleQuyu(e){
+        let value = e.target.value.trim()
+        this.setState({ quyu: value})
+        let search = '&media_status='+ this.state.status +'&catalog_map='+this.state.catalog+'&order='+this.state.order+'&quyu_catalog='+value
         this.triggerSearch(search)
     }
     handleOrder(e){
         let value = e.target.value.trim()
         this.setState({ order: value})
-        let search = '&media_status='+ this.state.status +'&catalog_map='+this.state.catalog+'&order='+value
+        let search = '&media_status='+ this.state.status +'&catalog_map='+this.state.catalog+'&order='+value+'&quyu_catalog='+this.state.quyu
         this.triggerSearch(search)
     }
     renderStatus(data){
@@ -89,7 +96,28 @@ class SearchHeader extends Component {
             })
         }
         return(
-            <select  name="select" className="form-control input-sm" onChange={this.handleCatalog.bind(this)}>
+            <select  name="select" className=
+            "form-control input-sm" onChange={this.handleCatalog.bind(this)}>
+                {arr.map((status,i)=>
+                    <option key={i} value={status.value}>{status.text}</option>
+                )}
+            </select>
+        )
+    }
+    renderQuyu(data){
+        let arr = [{
+            value:'all',
+            text:'全部行业分类'
+        }];
+        for (let key in data) {
+            arr.push({
+                value:key,
+                text:data[key]
+            })
+        }
+        return(
+            <select  name="select" className=
+            "form-control input-sm" onChange={this.handleQuyu.bind(this)}>
                 {arr.map((status,i)=>
                     <option key={i} value={status.value}>{status.text}</option>
                 )}
@@ -108,6 +136,9 @@ class SearchHeader extends Component {
                     <div className="expNameCon form-section">
                         {this.renderCatalog(this.props.config.catalog)}
                     </div>
+                    <div className="expNameCon form-section">
+                            {this.renderQuyu(this.props.config.quyuCata)}
+                    </div>
                     <div className="expNameCon data">
                         <input type="text"  className="form-control" placeholder={placeholder} onChange={this.handleChange.bind(this)}></input>
                     </div>
@@ -117,11 +148,11 @@ class SearchHeader extends Component {
                     </div>
                     <div className="option">
                         <select  name="select" className="form-control input-sm" onChange={this.handleOrder.bind(this)}>
-                            <option value="0">总阅读数从高到低排序</option>
-                            <option value="1">总阅读数从低到高排序</option>
-                            <option value="2">总推荐数从高到低排序</option>
-                            <option value="3">总推荐数从低到高排序</option>
-                            <option value="4">总订阅数从高到低排序</option>
+                            <option value="4">总阅读数从高到低排序</option>
+                            <option value="3">总阅读数从低到高排序</option>
+                            <option value="8">总推荐数从高到低排序</option>
+                            <option value="7">总推荐数从低到高排序</option>
+                            <option value="6">总订阅数从高到低排序</option>
                             <option value="5">总订阅数从低到高排序</option>
                         </select>
                     </div>

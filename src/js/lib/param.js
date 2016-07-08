@@ -6,7 +6,6 @@ function params(a) {
     };
     // If an array was passed in, assume that it is an array
     // of form elements
-
     // Serialize the key/values
     for (var j in a)
         add(j, a[j]);

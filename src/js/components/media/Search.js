@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import {throttle} from '../../lib/param'
 import Alert from 'react-s-alert'
 import 'whatwg-fetch'
-
+import {params} from '../../lib/param'
 class Search extends Component {
     constructor(props, context) {
         super(props, context)
@@ -55,13 +55,10 @@ class Search extends Component {
         var formData = new FormData();
 
         // 文件名称，文件对象
-        formData.append(file.name, file);
+        formData.append('file', file);
         fetch('/media/mediaBdImport', {
             method: 'POST',
             credentials: 'same-origin',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            },
             body: formData
         }).then(function(response) {
             return response.json()
@@ -75,7 +72,6 @@ class Search extends Component {
                          Alert.close(salert);
                     }
                 });
-
             }else{
                 Alert.error(json.response.msg, {
                     effect: '',
@@ -86,6 +82,7 @@ class Search extends Component {
                     }
                 });
             }
+            target.value = ''
         }).catch(function(ex) {
             Alert.error(ex, {
                 effect: '',
@@ -97,6 +94,25 @@ class Search extends Component {
              });
         })
     }
+    renderButton(){
+        if(g_userInfo&&g_userInfo.admin==='1'){
+            return (
+                <div className="input-group-btn">
+                    <button type="button" className="btn btn-secondary search" onClick={this.handleSearch.bind(this)}>搜索</button>
+                    <button type="button" className="btn btn-secondary search" onClick={this.handleMuti.bind(this)}>批量导入</button>
+                    <input type="file" className="hide" id="ifile" onChange={this.handleFile.bind(this)}></input>
+                    <a className="link" href="/media/mediaBdTemplate">下载excel导入模版</a>
+                    <b>(请在完成媒体配置后，将Excel格式转为CSV格式提交)</b>
+                </div>
+            )
+        } else {
+            return (
+                <div className="input-group-btn">
+                    <button type="button" className="btn btn-secondary search" onClick={this.handleSearch.bind(this)}>搜索</button>
+                </div>
+            )
+        }
+    }
     render() {
         let ButtonText = '搜索'
         let placeholder = '注册邮箱'
@@ -106,12 +122,7 @@ class Search extends Component {
                     <div className="expNameCon">
                         <input type="text"  className="form-control" placeholder={placeholder} onChange={this.handleChange.bind(this)}></input>
                     </div>
-                    <div className="input-group-btn">
-                        <button type="button" className="btn btn-secondary search" onClick={this.handleSearch.bind(this)}>搜索</button>
-                        <button type="button" className="btn btn-secondary search" onClick={this.handleMuti.bind(this)}>批量导入</button>
-                        <input type="file" className="hide" id="ifile" onChange={this.handleFile.bind(this)}></input>
-                        <a className="link" href="/media/mediaBdTemplate">下载excel导入模版</a>
-                    </div>
+                    {this.renderButton()}
                 </div>
             </div>
         )

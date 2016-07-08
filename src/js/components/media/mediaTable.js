@@ -8,7 +8,8 @@ class MailTable extends Component {
     constructor(props, context) {
         super(props, context)
         this.state = {
-            key :''
+            key :'',
+            catalog:''
         }
     }
     handleDelete(e){
@@ -25,9 +26,25 @@ class MailTable extends Component {
         let cname = target.className
         let reg_email = target.parentNode.parentNode.childNodes[4].textContent
         let bd_owner = this.state.key
+        let catalog = this.state.catalog
+        if(cname !=='claim') {
+            return;
+        }
+        if(catalog ===''){
+            let salert = Alert.error('请选择认领到行业分类', {
+                effect: '',
+                position: 'top',
+                timeout: 3000,
+                onClose: function(e){
+                     Alert.close(salert);
+                }
+            });
+            return;
+        }
         let dataSet = []
         dataSet['reg_email'] = reg_email
         dataSet['bd_owner'] = bd_owner
+        dataSet['quyu_catalog'] = catalog
         if(cname === 'claim') {
             fetch('/media/mediaBdBinding', {
                 method: 'POST',
@@ -43,12 +60,12 @@ class MailTable extends Component {
                     let salert = Alert.info('保存成功', {
                         effect: '',
                         position: 'top',
-                        timeout: 3000,
+                        timeout: 600,
                         onClose: function(e){
                              Alert.close(salert);
+                             window.location.href="/media/mediaBdManage"
                         }
                     });
-                    window.location.href="/media/mediaBdManage"
                 }else{
                     Alert.error(json.response.msg, {
                         effect: '',
@@ -73,6 +90,37 @@ class MailTable extends Component {
     }
     handleChange(e){
         this.setState({ key: e.target.value.trim()})
+    }
+    handleStatus(e){
+        this.setState({ catalog: e.target.value.trim()})
+    }
+    renderSelect(item){
+        let data = this.props.catalog
+        let arr = [{
+            value:'',
+            text:'请选择认领到行业分类'
+        }];
+        for (let key in data) {
+            arr.push({
+                value:key,
+                text:data[key]
+            })
+        }
+        if(item['Fbinding_str'][0] === 'claim') {
+            return(
+                <td>
+                    <select  name="select" className="form-control input-sm" onChange={this.handleStatus.bind(this)}>
+                        {arr.map((status,i)=>
+                            <option key={i} value={status.value}>{status.text}</option>
+                        )}
+                    </select>
+                </td>
+            )
+        } else {
+            return(
+                <td data-id={item['Fid']}>{item['Fquyu_catalog_vlaue']}</td>
+            )
+        }
     }
     renderButton(item){
         let buttons=[]
@@ -118,6 +166,7 @@ class MailTable extends Component {
                 <th>MMS分类</th>
                 <th>运营状态</th>
                 <th>拓展人员</th>
+                <th>行业分类</th>
                 <th>操作</th>
             </tr>
         )
@@ -129,7 +178,7 @@ class MailTable extends Component {
             )
         } else {
             return (
-                <td className="owner"><input type="text" onChange={this.handleChange.bind(this)}></input></td>
+                <td className="owner"><input type="text" placeholder="请输入拓展人员RTX" onChange={this.handleChange.bind(this)}></input></td>
             )
         }
     }
@@ -147,6 +196,7 @@ class MailTable extends Component {
                         <td>{item['Fmms_catalog']}</td>
                         <td>{item['Fstatus_value']}</td>
                         {this.renderOwner(item)}
+                        {this.renderSelect(item)}
                         {this.renderButton(item)}
                     </tr>
                 )}

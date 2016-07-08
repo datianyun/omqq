@@ -9,27 +9,28 @@ var port = 3000
 var compiler = webpack(config)
 app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }))
 app.use(webpackHotMiddleware(compiler, {
-  path: '/__webpack_hmr',
-  heartbeat: 10 * 1000
+    path: '/__webpack_hmr',
+    heartbeat: 10 * 1000
 }));
 
 app.use('/static', express.static('dist'));
 
 
-
-
 app.get("/login", function(req, res) {
-  res.sendFile(__dirname + '/src/html/login.html')
+    res.sendFile(__dirname + '/src/html/login.html')
 })
-
+app.post('/media/mediaBdImport', function (req, res) {
+    console.log(req)
+    res.send('POST request to homepage');
+});
 app.get("/system", function(req, res) {
-  res.sendFile(__dirname + '/src/html/system.html')
+    res.sendFile(__dirname + '/src/html/system.html')
 })
 
 app.listen(port, function(error) {
-  if (error) {
-    console.error(error)
-  } else {
-    console.info("==> 🌎  Listening on port %s. Open up http://localhost:%s/ in your browser.", port, port)
-  }
+    if (error) {
+        console.error(error)
+    } else {
+        console.info("==> 🌎  Listening on port %s. Open up http://localhost:%s/ in your browser.", port, port)
+    }
 })

@@ -46,10 +46,22 @@ class Paging extends Component {
         const {currentPage,total,perNum} = this.props.options
         const pageNum = Math.ceil(total/perNum)
         const pageList = []
-        for(let k=0;k<pageNum;k++){
-            pageList.push({
-                index:k
-            })
+        const showPage = 5
+
+        if(pageNum < showPage) {
+            for(let k=1;k<=pageNum;k++){
+                pageList.push({
+                    index:k
+                })
+            }
+        } else {
+            let start = (currentPage-2>0)?currentPage-2:1
+            let end = (start+4>pageNum)?pageNum:start+4
+            for(let k=start;k<=end;k++){
+                pageList.push({
+                    index:k
+                })
+            }
         }
         return (
             <div className="paginationholder">
@@ -65,8 +77,8 @@ class Paging extends Component {
                     {pageList.map((item,i) =>
                         <li className={classnames({
                             page:true,
-                            active:(i+1)==currentPage
-                        })} key={i}><a href="#">{i+1}</a></li>
+                            active:item.index==currentPage
+                        })} key={i}><a href="#">{item.index}</a></li>
                     )}
                     <li className={classnames({
                         next:true,

@@ -1,4 +1,4 @@
-import { ADD_MAIL, DELETE_MAIL, ADD_MEDIA, DELETE_MEDIA, GET_CONFIG,ADD_CONFIG,ADD_TIME, ADD_ALERT,DELETE_ALERT,ADD_ANALYSIS} from '../constants/ActionTypes'
+import { ADD_MAIL, DELETE_MAIL, ADD_MEDIA, DELETE_MEDIA, GET_CONFIG,ADD_CONFIG,ADD_TIME, ADD_ALERT,DELETE_ALERT,ADD_ANALYSIS,ADD_STATICS,REFRESH_STATICS,ADD_ARTICLE} from '../constants/ActionTypes'
 import {addAlert} from '../actions/index'
 import moment from 'moment'
 const initialState = []
@@ -64,6 +64,10 @@ export function alerts(state={
                 })
             }
             return state
+        case ADD_ALERT:
+            return Object.assign({}, action.alerts, {
+                info: action.alerts.msg
+            })
         case DELETE_ALERT:
             return Object.assign({}, action.alerts, {
                 info: null
@@ -138,13 +142,70 @@ export function medias(state = initialState, action) {
 }
 export function analysis(state = {
     status:[],
-    catalog:[]
+    catalog:[],
+    quyuCata:[]
 }, action) {
     switch (action.type) {
         case ADD_ANALYSIS:
             return {
                 status: action.status,
-                catalog:action.catalog
+                catalog:action.catalog,
+                quyuCata:action.quyuCata
+            }
+        default:
+            return state
+    }
+}
+export function statics(state = {
+    posts:[],
+    total:0
+}, action) {
+    switch (action.type) {
+        case ADD_STATICS:
+            return {
+                posts:action.posts,
+                total:action.total
+            }
+        case REFRESH_STATICS:
+            return {
+                total:action.total,
+                posts:action.posts
+            }
+        default:
+            return state
+    }
+}
+
+export function articles(state = {
+    total:0,
+    posts:[]
+}, action) {
+    switch (action.type) {
+        case ADD_STATICS:
+            return {
+                total:action.count,
+                posts:action.articles
+            }
+        case ADD_ARTICLE:
+            return {
+                total:action.count,
+                posts:action.articles
+            }
+        default:
+            return state
+    }
+}
+export function articleData(state = {
+    read:0,
+    recommend:0,
+    fans:0
+}, action) {
+    switch (action.type) {
+        case ADD_STATICS:
+            return {
+                read:action.read,
+                recommend:action.recommend,
+                fans:action.fans
             }
         default:
             return state
