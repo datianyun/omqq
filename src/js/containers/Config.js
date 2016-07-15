@@ -29,7 +29,7 @@ class Config extends Component {
           }
           if(nextProps.alerts.info!==null){
               const { dispatch} = nextProps
-              let alertInfo = nextProps.alerts.info +',添加失败'
+              let alertInfo = '添加失败:' + nextProps.alerts.info
               Alert.error(alertInfo, {
                   effect: '',
                   position: 'top',

@@ -23,10 +23,27 @@ class AddMail extends Component {
 
     handleSave(){
         const text = this.state.text
+        const mails = this.props.mails
+        let exist = false
         let reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/g
         if(reg.test(text)){
-            this.props.onSave(text)
-            this.setState({ text: '' })
+            mails.forEach(function(item,index){
+                if(item.text===text){
+                    Alert.error('邮箱已存在', {
+                        effect: '',
+                        position: 'top',
+                        timeout: 3000,
+                        onClose: function(e){
+                            Alert.closeAll();
+                        }
+                     });
+                     exist = true
+                }
+            })
+            if(!exist){
+                this.props.onSave(text)
+                this.setState({ text: '' })
+            }    
         } else {
             Alert.error('邮箱格式错误', {
                 effect: '',

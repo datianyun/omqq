@@ -1,7 +1,6 @@
 import React, {PropTypes, Component} from 'react'
 import 'whatwg-fetch'
 var Alert = require('react-s-alert').default
-import 'whatwg-fetch'
 import {params} from '../../lib/param'
 import Dialog from '../common/Dialog'
 import classnames from 'classnames'

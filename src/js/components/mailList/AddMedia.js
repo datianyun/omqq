@@ -20,11 +20,12 @@ class AddMedia extends Component {
         320
     }
     render() {
+        const tips = '目前邮件配置仅支持正式运营的非个人自媒体号，且必须30天内有发文'
         return (
             <div className="wizard-step">
                 <h3>第二步，添加接收数据邮件的媒体</h3>
                 <div className="form-group">
-                    <Search type="add" selectMedia={this.props.actions.selectMedia} validate={this.validate.bind(this)}></Search>
+                    <Search tips={tips} type="add" selectMedia={this.props.actions.selectMedia} validate={this.validate.bind(this)}></Search>
                     <MailTable type='add' lists={this.props.medias} deleteMedia={this.props.actions.deleteMedia}></MailTable>
                 </div>
             </div>

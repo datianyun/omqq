@@ -4,10 +4,6 @@ var webpack = require('webpack')
 var env = process.env.NODE_ENV
 var EXAMPLES_DIR = path.resolve(__dirname, 'src/js/entry');
 
-function isDirectory(dir) {
-    return fs.lstatSync(dir).isDirectory();
-}
-
 function buildEntries() {
     return fs.readdirSync(EXAMPLES_DIR).reduce(function (entries, dir) {
         var name = dir.split(".")[0];
@@ -28,7 +24,6 @@ var config = {
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(env)
         }),
-
         new webpack.NoErrorsPlugin()
     ],
     module: {
@@ -47,7 +42,6 @@ var config = {
         ]
     }
 }
-
 if (env === 'development') {
     config.devtool = 'cheap-module-eval-source-map';
 }

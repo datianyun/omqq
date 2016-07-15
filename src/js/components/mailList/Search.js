@@ -79,6 +79,7 @@ class Search extends Component {
                     <div className="input-group-btn">
                         <button type="button" className="btn btn-primary search" onClick={this.handleSearch.bind(this)}>{ButtonText}</button>
                     </div>
+                    <div className="desc">{'('+this.props.tips+')'}</div>
                 </div>
             </div>
         )
