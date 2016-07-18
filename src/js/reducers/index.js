@@ -1,13 +1,19 @@
 import { combineReducers } from 'redux'
-import todos from './todos'
-import {postsByMedia,selectedMedia} from './mail'
-import {mails,medias} from './config'
+import {postsByMedia,selectedMedia,selectedArticle} from './mail'
+import {mails,medias,getConfig,time,alerts,analysis,statics,articles,articleData} from './config'
 
 const rootReducer = combineReducers({
-    todos,
     mails,
     medias,
+    time,
+    alerts,
+    analysis,
+    articleData,
+    statics,
+    articles,
+    getConfig,
     postsByMedia,
+    selectedArticle,
     selectedMedia
 })
 

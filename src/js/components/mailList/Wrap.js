@@ -8,27 +8,23 @@ class Wrap extends Component {
             name:'功能',
             classValue:'active',
             list:[{
-                name:'邮件配置',
-                classValue:'',
-                url:'/media/index'
-            },{
-                name:'其他配置',
+                name:'邮件列表',
                 classValue:'active',
-                url:'/media/index'
+                url:'/media/mailList'
             }]
-        },
-        {
+        },{
             id: 2,
-            name:'配置',
+            name:'数据',
             classValue:'',
             list:[{
-                name:'查询列表',
+                name:'媒体配置',
                 classValue:'',
-                url:'/media/index'
-            },{
-                name:'配置我的自媒体',
+                url:'/media/mediaBdConfig'
+            },
+            {
+                name:'数据查询',
                 classValue:'',
-                url:'/media/index'
+                url:'/media/mediaBdManage'
             }]
         }]
         return (
@@ -38,7 +34,7 @@ class Wrap extends Component {
                         <div className="side">
                             <Menu activeMenu={menuObj}></Menu>
                         </div>
-                        <MailCon actions={this.props.actions} searchCon={this.props.selectedMedia} mediaObj={this.props.posts}></MailCon>
+                        <MailCon total={this.props.total} actions={this.props.actions} searchCon={this.props.selectedMedia} mediaObj={this.props.posts}></MailCon>
                     </div>
                 </div>
             </div>
@@ -49,6 +45,7 @@ class Wrap extends Component {
 Wrap.propTypes = {
     actions: PropTypes.object.isRequired,
     posts: PropTypes.array.isRequired,
+    total:PropTypes.string,
     selectedMedia:PropTypes.object.isRequired
 }
 

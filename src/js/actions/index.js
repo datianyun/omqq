@@ -1,81 +1,139 @@
 import * as types from '../constants/ActionTypes'
 import fetch from 'isomorphic-fetch'
 
-export function addTodo(text) {
-  return { type: types.ADD_TODO, text }
-}
-
-export function deleteTodo(id) {
-  return { type: types.DELETE_TODO, id }
-}
-
-export function editTodo(id, text) {
-  return { type: types.EDIT_TODO, id, text }
-}
-
-export function completeTodo(id) {
-  return { type: types.COMPLETE_TODO, id }
-}
-
-export function completeAll() {
-  return { type: types.COMPLETE_ALL }
-}
-
-export function clearCompleted() {
-  return { type: types.CLEAR_COMPLETED }
-}
-
 export function selectMedia(media) {
-  return {
-    type: types.SELECT_MEDIA,
-    media
-  }
+    return {
+        type: types.SELECT_MEDIA,
+        media
+    }
+}
+
+export function selectArticle(media) {
+    return {
+        type: types.SELECT_ARTICLE,
+        media
+    }
 }
 
 export function invalidateMail(media) {
-  return {
-    type: types.INVALIDATE_MAIL,
-    media:meidia
-  }
+    return {
+        type: types.INVALIDATE_MAIL,
+        media:meidia
+    }
 }
 
 function requestPosts(media) {
-  return {
-    type: types.REQUEST_POSTS,
-    media
-  }
+    return {
+        type: types.REQUEST_POSTS,
+        media
+    }
 }
 
 function receivePosts(media, json) {
-    if(media.type==="search"){
+    if(json.response.code === -1){
         return {
-            type: types.RECEIVE_POSTS,
+            type: types.ADD_ALERT,
             media,
-            posts: json.data.children.map(child => child.data),
+            alerts:json.response,
+            receivedAt: Date.now()
+        }
+    }
+    if(media.type==="search"){
+        if(json.data.quyu_catalog){
+            return {
+                type: types.RECEIVE_POSTS,
+                media,
+                posts: json.data.list,
+                total: json.data.count,
+                catalog:json.data.quyu_catalog,
+                receivedAt: Date.now()
+            }
+        } else {
+            return {
+                type: types.RECEIVE_POSTS,
+                media,
+                posts: json.data.list,
+                total: json.data.count,
+                receivedAt: Date.now()
+            }
+        }
+    } else if(media.type==="add") {
+        return {
+            type: types.ADD_MEDIA,
+            media,
+            posts: json.data.list,
+            total: json.data.count,
+            receivedAt: Date.now()
+        }
+    } else if(media.type==="analysis"){
+        return {
+            type: types.ADD_ANALYSIS,
+            media,
+            status: json.data.media_status,
+            catalog: json.data.catalog_map,
+            posts: json.data.list,
+            total: json.data.count,
+            quyuCata: json.data.quyu_catalog,
+            receivedAt: Date.now()
+        }
+    } else if(media.type==="statics"){
+        return {
+            type: types.ADD_STATICS,
+            media,
+            posts: json.data.list_total,
+            articles:json.data.list_article,
+            read: json.data.read,
+            recommend: json.data.recommend,
+            fans: json.data.fans,
+            total: json.data.count_total,
+            count: json.data.count_article,
+            receivedAt: Date.now()
+        }
+    } else if(media.type==="article"){
+        return {
+            type: types.ADD_ARTICLE,
+            media,
+            articles: json.data.list,
+            count: json.data.count,
+            receivedAt: Date.now()
+        }
+    } else if(media.type==="refreshStatic"){
+        return {
+            type: types.REFRESH_STATICS,
+            media,
+            posts: json.data.list,
+            total: json.data.count,
             receivedAt: Date.now()
         }
     } else {
         return {
-            type: types.ADD_MEDIA,
+            type: types.ADD_CONFIG,
             media,
-            posts: json.data.children.map(child => child.data),
+            posts: json.data,
             receivedAt: Date.now()
         }
     }
 }
 
-function fetchPosts(media) {
-    const params='?wd=' + media.key + '&page=' + media.currentPage + '&limit=' + media.perNum
+export function fetchPosts(media) {
+    let params='?keyword=' + media.key + '&page=' + media.currentPage + '&size=' + media.perNum
+    if(media.search!==undefined){
+        params += media.search
+    }
     return dispatch => {
         dispatch(requestPosts(media))
-            return fetch(`https://www.reddit.com/r/${media.key}.json`+params)
-                .then(response => response.json())
-                .then(json => dispatch(receivePosts(media, json)))
-      }
+            return fetch(media.path+params,{
+               credentials: 'same-origin'
+            }).then(response => response.json())
+            .then(json => dispatch(receivePosts(media, json)))
+    }
 }
 
 function shouldFetchPosts(state, media) {
-    const pkey = media.currentPage + '-' + media.key
+    let pkey = media.currentPage + '-' + media.key
+    if(media.search !== undefined){
+        pkey = media.currentPage + '-' +media.search + '-' +media.key+'-'+media.path
+    }
     const posts = state.postsByMedia[pkey]
     if (!posts) {
         return true
@@ -93,9 +151,20 @@ export function fetchPostsIfNeeded(media) {
         }
     }
 }
+export function fetchMediaIfNeeded(media){
+    return (dispatch, getState) => {
+        return dispatch(fetchPosts(media))
+    }
+}
 
 export function addMail(text) {
     return { type: types.ADD_MAIL, text }
+}
+export function addTime(time) {
+    return {
+        type: types.ADD_TIME,
+        time
+    }
 }
 
 export function deleteMail(id) {
@@ -106,6 +175,24 @@ export function addMedia(media) {
     return { type: types.ADD_MEDIA, media }
 }
 
-export function deleteMedia(id) {
-    return { type: types.DELETE_MEDIA, id }
+export function deleteMedia(media) {
+    return { type: types.DELETE_MEDIA, media }
+}
+
+export function fetchConfig(config){
+    const params = '?media_id=' + config.mid
+    return dispatch => {
+        dispatch(requestPosts(config))
+            return fetch(config.path+params,{
+               credentials: 'same-origin'
+            }).then(response => response.json())
+            .then(json => dispatch(receivePosts(config, json)))
+      }
+}
+export function addAlert(text){
+    return { type: types.ADD_ALERT, text}
+}
+
+export function deleteAlert(){
+    return { type: types.DELETE_ALERT}
 }

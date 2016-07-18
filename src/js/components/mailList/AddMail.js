@@ -1,5 +1,5 @@
 import React, {PropTypes, Component} from 'react'
-
+var Alert = require('react-s-alert').default
 class AddMail extends Component {
     constructor(props, context) {
         super(props, context)
@@ -23,8 +23,37 @@ class AddMail extends Component {
 
     handleSave(){
         const text = this.state.text
-        this.props.onSave(text)
-        this.setState({ text: '' })
+        const mails = this.props.mails
+        let exist = false
+        let reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/g
+        if(reg.test(text)){
+            mails.forEach(function(item,index){
+                if(item.text===text){
+                    Alert.error('邮箱已存在', {
+                        effect: '',
+                        position: 'top',
+                        timeout: 3000,
+                        onClose: function(e){
+                            Alert.closeAll();
+                        }
+                     });
+                     exist = true
+                }
+            })
+            if(!exist){
+                this.props.onSave(text)
+                this.setState({ text: '' })
+            }    
+        } else {
+            Alert.error('邮箱格式错误', {
+                effect: '',
+                position: 'top',
+                timeout: 3000,
+                onClose: function(e){
+                    Alert.closeAll();
+                }
+             });
+        }
     }
 
     handleDelete(e){
@@ -36,7 +65,7 @@ class AddMail extends Component {
     render() {
         return (
             <div className="wizard-step">
-                <h3>添加收件人邮箱</h3>
+                <h3>第一步，添加收件人邮箱</h3>
                 <div className="form-group">
                     <input type="email" id="if-email" name="if-email" className="input" placeholder="输入邮箱.." autoFocus="true"
                     value={this.state.text}
