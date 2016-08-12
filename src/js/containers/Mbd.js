@@ -2,48 +2,40 @@ import React, {Component,PropTypes} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import Header from '../components/common/Header'
-import Wrap from '../components/media/Container'
+import Wrap from '../components/mbd/container'
 import Footer from '../components/common/Footer'
 import * as TodoActions from '../actions'
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 import Alert from 'react-s-alert';
-
 class Frame extends Component {
     constructor(props) {
         super(props)
     }
-    componentDidMount() {
 
+    componentDidMount() {
+        const { dispatch, selectedMedia } = this.props
+        selectedMedia.path = '/media/mediaBDCataLogList'
+        selectedMedia.type = 'analysis'
+        dispatch(TodoActions.fetchPostsIfNeeded(selectedMedia))
     }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.selectedMedia !== this.props.selectedMedia) {
             const { dispatch, selectedMedia } = nextProps
             dispatch(TodoActions.fetchPostsIfNeeded(selectedMedia))
         }
-        if(nextProps.alerts.info!==null){
-            const { dispatch} = nextProps
-            let alertInfo = nextProps.alerts.info +',添加失败'
-            Alert.error(alertInfo, {
-                effect: '',
-                position: 'top',
-                timeout: 3000,
-                onClose: function(e){
-                    Alert.closeAll();
-                }
-            });
-            dispatch(TodoActions.deleteAlert())
-        }
     }
 
     render() {
-        const {posts,actions,total,selectedMedia,mediaCata,menus} = this.props
+        console.log(this.props)
+        const {posts,actions,total,selectedMedia,analysis,menus} = this.props
         return (
             <div>
-                <Wrap menus={menus} actions={actions} posts={posts} catalog={mediaCata} selectedMedia={selectedMedia} total={total}></Wrap>
+                <Wrap menus={menus} analysis={analysis} actions={actions} posts={posts} selectedMedia={selectedMedia} total={total}></Wrap>
                 <Footer></Footer>
-                <Alert stack={true} html={true}/>
-             </div>
+                <Alert stack={{limit: 3}} />
+            </div>
         )
     }
 }
@@ -66,10 +58,9 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-    const {selectedMedia, postsByMedia,alerts,menus} = state
-    const isAdmin = g_userInfo.admin
-    const pkey = selectedMedia.currentPage + '-' + selectedMedia.key
-    const {isFetching,lastUpdated,items: posts,total,catalog:mediaCata} = postsByMedia[pkey] || {
+    const {selectedMedia, postsByMedia,analysis,menus} = state
+    const pkey = selectedMedia.currentPage + '-' +selectedMedia.search + '-' +selectedMedia.key+ '-' + selectedMedia.path
+    const {isFetching,lastUpdated,items: posts,total} = postsByMedia[pkey] || {
         isFetching: true,
         items: []
     }
@@ -77,9 +68,8 @@ function mapStateToProps(state) {
         selectedMedia,
         posts,
         total,
-        alerts,
         menus,
-        mediaCata,
+        analysis,
         isFetching,
         lastUpdated
     }

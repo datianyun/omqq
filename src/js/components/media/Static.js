@@ -58,38 +58,9 @@ class StaContainer extends Component {
         )
     }
     render() {
-        let isAdmin = this.props.isAdmin ==='1' ? true : false
-        const menuObj = []
-        if(isAdmin) {
-            menuObj.push({
-                id: 1,
-                name:'功能',
-                classValue:'',
-                list:[{
-                    name:'邮件列表',
-                    classValue:'',
-                    url:'/media/mailList'
-                }]
-            })
-        }
-        menuObj.push({
-            id: 2,
-            name:'数据',
-            classValue:'active',
-            list:[{
-                name:'媒体配置',
-                classValue:'',
-                url:'/media/mediaBdConfig'
-            },
-            {
-                name:'数据查询',
-                classValue:'active',
-                url:'/media/mediaBdManage'
-            }]
-        })
         let breadTitle = '统计数据'
         const {selectMedia} = this.props.actions
-        const {articleData} = this.props
+        const {articleData,menus} = this.props
         let comp = [
             {
                 key:'整体统计',
@@ -108,7 +79,7 @@ class StaContainer extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="side">
-                            <Menu activeMenu={menuObj}></Menu>
+                            <Menu activeMenu={menus}></Menu>
                         </div>
                         <div className="main">
                             <Bread title={breadTitle}></Bread>

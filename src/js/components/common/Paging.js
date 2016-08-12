@@ -47,7 +47,6 @@ class Paging extends Component {
         const pageNum = Math.ceil(total/perNum)
         const pageList = []
         const showPage = 5
-
         if(pageNum < showPage) {
             for(let k=1;k<=pageNum;k++){
                 pageList.push({

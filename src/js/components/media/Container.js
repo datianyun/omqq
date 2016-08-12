@@ -6,9 +6,9 @@ import MediaTable from './MediaTable'
 class Container extends Component {
     renderTable(){
         const {posts} = this.props
-        let tips = '请使用“注册邮箱”搜索和批量导入完成媒体配置'
+        let tips = '请使用“注册邮箱”或“媒体ID”搜索和批量导入完成媒体认领'
         if(g_userInfo.admin == ''){
-            tips = '请使用“注册邮箱”搜索完成媒体配置'
+            tips = '请使用“注册邮箱”或“媒体ID”搜索完成媒体认领'
         }
         if(posts.length===0) {
             return(
@@ -23,43 +23,15 @@ class Container extends Component {
         }
     }
     render() {
-        let isAdmin = this.props.isAdmin ==='1' ? true : false
-        const menuObj = []
-        if(isAdmin) {
-            menuObj.push({
-                id: 1,
-                name:'功能',
-                classValue:'',
-                list:[{
-                    name:'邮件列表',
-                    classValue:'',
-                    url:'/media/mailList'
-                }]
-            })
-        }
-        menuObj.push({
-            id: 2,
-            name:'数据',
-            classValue:'active',
-            list:[{
-                name:'媒体配置',
-                classValue:'active',
-                url:'/media/mediaBdConfig'
-            },
-            {
-                name:'数据查询',
-                classValue:'',
-                url:'/media/mediaBdManage'
-            }]
-        })
-        let breadTitle = '媒体配置'
+        const {menus} = this.props
+        let breadTitle = '媒体认领'
         const {selectMedia} = this.props.actions
         return (
             <div className="wrap">
                 <div className="container">
                     <div className="row">
                         <div className="side">
-                            <Menu activeMenu={menuObj}></Menu>
+                            <Menu activeMenu={menus}></Menu>
                         </div>
                         <div className="main">
                             <Bread title={breadTitle}></Bread>

@@ -26,10 +26,10 @@ class Frame extends Component {
     }
 
     render() {
-        const {posts,actions,total,selectedMedia} = this.props
+        const {posts,actions,total,selectedMedia,menus} = this.props
         return (
             <div>
-                <Wrap actions={actions} posts={posts} selectedMedia={selectedMedia} total={total}></Wrap>
+                <Wrap menus={menus} actions={actions} posts={posts} selectedMedia={selectedMedia} total={total}></Wrap>
                 <Footer></Footer>
                 <Alert stack={{limit: 3}} />
              </div>
@@ -54,7 +54,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-    const {selectedMedia, postsByMedia} = state
+    const {selectedMedia, postsByMedia,menus} = state
     const pkey = selectedMedia.currentPage + '-' + selectedMedia.key
     const {isFetching,lastUpdated,items: posts,total} = postsByMedia[pkey] || {
         isFetching: true,
@@ -64,6 +64,7 @@ function mapStateToProps(state) {
         selectedMedia,
         posts,
         total,
+        menus,
         isFetching,
         lastUpdated
     }

@@ -35,10 +35,10 @@ class Static extends Component {
     }
 
     render() {
-        const {actions,selectedMedia,statics,selectedArticle,articles,articleData,isAdmin} = this.props
+        const {actions,selectedMedia,statics,selectedArticle,articles,articleData,menus} = this.props
         return (
             <div>
-                <Wrap isAdmin={isAdmin} articleData={articleData} statics={statics} actions={actions} articles={articles} selectedMedia={selectedMedia} selectedArticle={selectedArticle}></Wrap>
+                <Wrap menus={menus} articleData={articleData} statics={statics} actions={actions} articles={articles} selectedMedia={selectedMedia} selectedArticle={selectedArticle}></Wrap>
                 <Footer></Footer>
                 <Alert stack={{limit: 3}} />
             </div>
@@ -61,8 +61,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-    const {selectedMedia, postsByMedia,statics,selectedArticle,articles,articleData} = state
-    const isAdmin = g_userInfo.admin
+    const {selectedMedia, postsByMedia,statics,selectedArticle,articles,articleData,menus} = state
     const pkey = selectedMedia.currentPage + '-' +selectedMedia.search + '-' +selectedMedia.key + '-' + selectedMedia.path
     const {items:sposts} = postsByMedia[pkey] || {
         items: []
@@ -81,7 +80,7 @@ function mapStateToProps(state) {
         selectedMedia,
         selectedArticle,
         articles,
-        isAdmin,
+        menus,
         articleData,
         statics
     }

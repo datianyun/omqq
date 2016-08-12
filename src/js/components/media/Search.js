@@ -8,7 +8,8 @@ class Search extends Component {
     constructor(props, context) {
         super(props, context)
         this.state = {
-            key :''
+            key :'',
+            type:'id'
         }
     }
     validateAdd(){
@@ -27,9 +28,6 @@ class Search extends Component {
         return true
     }
     handleSearch(e){
-        if(!this.validateAdd()){
-            return;
-        }
         let initialState = {
             type: this.props.type,
             key : this.state.key,
@@ -49,13 +47,26 @@ class Search extends Component {
     handleMuti(){
         document.getElementById('ifile').click()
     }
+    handleType(e){
+        this.setState({ type: e.target.value.trim()})
+    }
+    handleHover(e){
+        let target = e.currentTarget
+        let cName = target.className
+        if(cName.indexOf('show') !==-1){
+            target.className="link"
+        } else {
+            target.className="link showTip"
+        }
+    }
     handleFile(e){
         let target = e.currentTarget
         let file = target.files[0]
         var formData = new FormData();
 
         // 文件名称，文件对象
-        formData.append('file', file);
+        formData.append('file', file)
+        formData.append('type',this.state.type)
         fetch('/media/mediaBdImport', {
             method: 'POST',
             credentials: 'same-origin',
@@ -76,7 +87,8 @@ class Search extends Component {
                 Alert.error(json.response.msg, {
                     effect: '',
                     position: 'top',
-                    timeout: 3000,
+                    timeout: 'none',
+                    html: true,
                     onClose: function(e){
                         Alert.closeAll();
                     }
@@ -88,6 +100,7 @@ class Search extends Component {
                 effect: '',
                 position: 'top',
                 timeout: 3000,
+                html: true,
                 onClose: function(e){
                     Alert.closeAll();
                 }
@@ -99,10 +112,27 @@ class Search extends Component {
             return (
                 <div className="input-group-btn">
                     <button type="button" className="btn btn-secondary search" onClick={this.handleSearch.bind(this)}>搜索</button>
+                    <div className="form-group">
+                        <label for="select" className="form-label">自媒体帐号类型:</label>
+                        <select name="select" className="form-control search-type" onChange={this.handleType.bind(this)}>
+                            <option value="id">媒体ID</option>
+                            <option value="email">注册邮箱</option>
+                        </select>
+                    </div>
                     <button type="button" className="btn btn-secondary search" onClick={this.handleMuti.bind(this)}>批量导入</button>
                     <input type="file" className="hide" id="ifile" onChange={this.handleFile.bind(this)}></input>
-                    <a className="link" href="/media/mediaBdTemplate">下载excel导入模版</a>
-                    <b>(请在完成媒体配置后，将Excel格式转为CSV格式提交)</b>
+                    <a className="link" href="/media/mediaBdTemplate" onMouseOver={this.handleHover.bind(this)} onMouseOut={this.handleHover.bind(this)}>
+                        下载excel导入模版<i className="icon icon-help-gray"></i>
+                        <div className="tooltip-inlineblock">
+                            <div className="tooltip tooltip-top  notes" >
+                                <div className="tooltip-arrow"></div>
+                                <div className="tooltip-inner">
+                                    <p>1."自媒体账号类型"支持：注册邮箱 或 媒体ID。根据您选择的“自媒体账号类型”，请在模板首列"自媒体账号" 中填入对应信息。</p>
+                                    <p>2.注意单次批量导入数据时不能超过500条</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
                 </div>
             )
         } else {
@@ -115,7 +145,7 @@ class Search extends Component {
     }
     render() {
         let ButtonText = '搜索'
-        let placeholder = '注册邮箱'
+        let placeholder = '注册邮箱/媒体ID'
         return (
             <div className="breadcrumb-mod">
                 <div className="userBread clearfix">

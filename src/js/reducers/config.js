@@ -143,14 +143,16 @@ export function medias(state = initialState, action) {
 export function analysis(state = {
     status:[],
     catalog:[],
-    quyuCata:[]
+    quyuCata:[],
+    bdsite:[]
 }, action) {
     switch (action.type) {
         case ADD_ANALYSIS:
             return {
                 status: action.status,
                 catalog:action.catalog,
-                quyuCata:action.quyuCata
+                quyuCata:action.quyuCata,
+                bdsite:action.bdsite
             }
         default:
             return state
@@ -210,4 +212,71 @@ export function articleData(state = {
         default:
             return state
     }
+}
+export function menus(state = [], action) {
+    state=[]
+    let isAdmin = g_userInfo.admin ==='1' ? true : false
+    let isQuyu = g_userInfo.bdsitecatalog.indexOf(g_userInfo.site) === -1 ? false: true
+    let menuTar = {
+        id: 1,
+        name:'政企专区',
+        classValue:'',
+        list:[{
+            name:'邮件功能',
+            classValue:'',
+            url:'/media/mailList'
+        }]
+    }
+    let menuObj = {
+        id: 2,
+        name:'媒体运营',
+        classValue:'',
+        list:[{
+            name:'媒体认领',
+            classValue:'',
+            url:'/media/mediaBdConfig'
+        },
+        {
+            name:'媒体管理',
+            classValue:'',
+            url:'/media/mediaBdManage'
+        }]
+    }
+    if(isQuyu){
+        menuObj.list.push({
+            name:'按行业查看全部',
+            classValue:'',
+            url:'/media/mediaBdCataLog'
+        })
+    }
+
+    let url = window.location.pathname
+    switch(url){
+        case '/media/mailList':
+        case '/media/mailConfig':
+            menuTar.classValue='active'
+            menuTar.list[0].classValue='active'
+            break;
+        case '/media/mediaBdConfig':
+            menuObj.classValue='active'
+            menuObj.list[0].classValue='active'
+            break
+        case '/media/mediaBdManage':
+            menuObj.classValue='active'
+            menuObj.list[1].classValue='active'
+            break
+        case '/media/statisticsManage':
+            menuObj.classValue='active'
+            menuObj.list[1].classValue='active'
+            break
+        case '/media/mediaBdCataLog':
+            menuObj.classValue='active'
+            menuObj.list[2].classValue='active'
+            break
+    }
+    if(isAdmin) {
+        state.push(menuTar)
+    }
+    state.push(menuObj)
+    return state
 }

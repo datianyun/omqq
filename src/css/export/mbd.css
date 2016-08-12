@@ -1,0 +1,28 @@
+@charset "utf-8";
+
+/*common css*/
+@@include("../common/reset.css")
+
+@@include("../common/icon.css")
+
+@@include("../common/button.css")
+
+@@include("../common/mod.css")
+
+@@include("../common/form.css")
+
+@@include("../common/popup.css")
+
+@@include("../common/article.css")
+
+@@include("../common/extra.css")
+
+@@include("../common/gallery.css")
+
+@@include("../common/todo-list.css")
+
+/*pagelet css*/
+
+@@include("../page/main.css")
+
+@@include("../page/mbd.css")

@@ -1,20 +1,15 @@
 import React, {PropTypes, Component} from 'react'
 import Menu from '../common/Menu'
 import Bread from '../common/Bread'
-import SearchHeader from './SearchHeader'
+import SearchHeader from './Search'
 import DataTable from './DataTable'
 import Paging from '../common/Paging'
 
 class Container extends Component {
-    onClear(){
-        const selectedMedia = this.props.selectedMedia
-        const pkey = selectedMedia.currentPage + '-' +selectedMedia.search + '-' +selectedMedia.key+ '-' + selectedMedia.path
-        this.props.actions.deleteManager(pkey)
-    }
 
     renderContent(){
         const {posts} = this.props
-        let breadTitle = '媒体管理'
+        let breadTitle = '按行业查看全部'
         const {selectMedia} = this.props.actions
         const options = Object.assign({},this.props.selectedMedia,{
             total:this.props.total
@@ -34,7 +29,7 @@ class Container extends Component {
                 <div className="main">
                     <Bread title={breadTitle}></Bread>
                     <SearchHeader config={this.props.analysis} type="search" selectMedia={selectMedia}></SearchHeader>
-                    <DataTable  refresh={this.props.refresh} onClear={this.onClear.bind(this)} selectMedia={selectMedia} config={this.props.analysis} lists={this.props.posts}></DataTable>
+                    <DataTable  config={this.props.analysis} lists={this.props.posts}></DataTable>
                     <Paging  options={options} selectMedia={selectMedia}></Paging>
                 </div>
             )

@@ -43,7 +43,7 @@ class AddMail extends Component {
             if(!exist){
                 this.props.onSave(text)
                 this.setState({ text: '' })
-            }    
+            }
         } else {
             Alert.error('邮箱格式错误', {
                 effect: '',

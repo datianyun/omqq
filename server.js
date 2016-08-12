@@ -19,13 +19,6 @@ app.use('/static', express.static('dist'));
 app.get("/login", function(req, res) {
     res.sendFile(__dirname + '/src/html/login.html')
 })
-app.post('/media/mediaBdImport', function (req, res) {
-    console.log(req)
-    res.send('POST request to homepage');
-});
-app.get("/system", function(req, res) {
-    res.sendFile(__dirname + '/src/html/system.html')
-})
 
 app.listen(port, function(error) {
     if (error) {

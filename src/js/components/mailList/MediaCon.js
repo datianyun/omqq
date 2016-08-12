@@ -34,30 +34,7 @@ class MediaCon extends Component {
         )
     }
     render() {
-        const menuObj = [{
-            id: 1,
-            name:'功能',
-            classValue:'active',
-            list:[{
-                name:'邮件列表',
-                classValue:'active',
-                url:'/media/mailList'
-            }]
-        },{
-            id: 2,
-            name:'数据',
-            classValue:'',
-            list:[{
-                name:'媒体配置',
-                classValue:'',
-                url:'/media/mediaBdConfig'
-            },
-            {
-                name:'数据查询',
-                classValue:'',
-                url:'/media/mediaBdManage'
-            }]
-        }]
+        const {menus} = this.props
         const comp = [this.renderAddMail.bind(this),this.renderAddMedia.bind(this),this.renderSendMail.bind(this)]
         let breadTitle = '邮件配置 > ' + this.props.getConfig.Fname
         return (
@@ -65,7 +42,7 @@ class MediaCon extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="side">
-                            <Menu activeMenu={menuObj}></Menu>
+                            <Menu activeMenu={menus}></Menu>
                         </div>
                         <div className="main">
                             <Bread title={breadTitle}></Bread>

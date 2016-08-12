@@ -44,6 +44,12 @@ var config = {
 }
 if (env === 'development') {
     config.devtool = 'cheap-module-eval-source-map';
+    config.entry = {
+        index: ['./src/js/entry/index.js','webpack-hot-middleware/client'],
+        data: ['./src/js/entry/data.js','webpack-hot-middleware/client'],
+        media: ['./src/js/entry/media.js','webpack-hot-middleware/client'],
+        mbd: ['./src/js/entry/mbd.js','webpack-hot-middleware/client']
+    }
 }
 
 module.exports = config

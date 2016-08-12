@@ -80,7 +80,7 @@ class MailTable extends Component {
                     let salert = Alert.info('清除配置成功', {
                         effect: '',
                         position: 'top',
-                        timeout: 3000,
+                        timeout: 30000,
                         onClose: function(e){
                              Alert.close(salert);
                         }
@@ -90,7 +90,7 @@ class MailTable extends Component {
                     Alert.info(json.response.msg, {
                         effect: '',
                         position: 'top',
-                        timeout: 3000,
+                        timeout: 30000,
                         onClose: function(e){
                             Alert.closeAll();
                         }
@@ -100,7 +100,7 @@ class MailTable extends Component {
                 Alert.error(ex, {
                     effect: '',
                     position: 'top',
-                    timeout: 3000,
+                    timeout: 30000,
                     onClose: function(e){
                         Alert.closeAll();
                     }

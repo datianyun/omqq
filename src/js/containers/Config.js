@@ -71,7 +71,7 @@ class Config extends Component {
                   let salert = Alert.info('保存成功', {
                       effect: '',
                       position: 'top',
-                      timeout: 3000,
+                      timeout: 30000,
                       offset: 100,
                       onClose: function(e){
                            Alert.close(salert);
@@ -82,7 +82,7 @@ class Config extends Component {
                   Alert.error(json.response.msg, {
                       effect: '',
                       position: 'top',
-                      timeout: 3000,
+                      timeout: 30000,
                       onClose: function(e){
                           Alert.closeAll();
                       }
@@ -92,7 +92,7 @@ class Config extends Component {
               Alert.error(ex, {
                   effect: '',
                   position: 'top',
-                  timeout: 3000,
+                  timeout: 30000,
                   onClose: function(e){
                       Alert.closeAll();
                   }
@@ -100,10 +100,10 @@ class Config extends Component {
           })
       }
       render() {
-          const {actions,mails,medias,time,getConfig} = this.props
+          const {actions,mails,medias,time,getConfig,menus} = this.props
           return (
               <div>
-                    <MediaCon getConfig={getConfig} handleSave={this.handleSave.bind(this)} actions={actions} mails={mails} medias={medias} time={time}></MediaCon>
+                    <MediaCon menus={menus} getConfig={getConfig} handleSave={this.handleSave.bind(this)} actions={actions} mails={mails} medias={medias} time={time}></MediaCon>
                     <Footer></Footer>
                     <Alert stack={{limit: 3}} />
               </div>
@@ -121,12 +121,13 @@ Config.propTypes = {
 
 
 function mapStateToProps(state) {
-    const {getConfig,selectedMedia,mails,medias,time,alerts} = state
+    const {getConfig,selectedMedia,mails,medias,time,alerts,menus} = state
     return {
         getConfig: getConfig,
         selectedMedia: selectedMedia,
         mails: mails,
         time: time,
+        menus,
         alerts: alerts,
         medias: medias
     }

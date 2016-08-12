@@ -74,6 +74,7 @@ function receivePosts(media, json) {
             posts: json.data.list,
             total: json.data.count,
             quyuCata: json.data.quyu_catalog,
+            bdsite: json.data.bd_site_list,
             receivedAt: Date.now()
         }
     } else if(media.type==="statics"){
@@ -138,6 +139,9 @@ function shouldFetchPosts(state, media) {
     if (!posts) {
         return true
     }
+    if(media.refresh !==undefined){
+        return true
+    }
     if (posts.isFetching) {
         return false
     }
@@ -188,11 +192,14 @@ export function fetchConfig(config){
             }).then(response => response.json())
             .then(json => dispatch(receivePosts(config, json)))
       }
-}
-export function addAlert(text){
+}export function addAlert(text){
     return { type: types.ADD_ALERT, text}
 }
 
 export function deleteAlert(){
     return { type: types.DELETE_ALERT}
+}
+
+export function deleteManager(id){
+    return { type: types.DELETE_MANAGER,id}
 }

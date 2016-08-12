@@ -36,6 +36,7 @@ class DataTable extends Component {
         this.setState({ catalog: value})
     }
     handlePost(data){
+        let that = this
         fetch(data.url, {
             method: 'POST',
             credentials: 'same-origin',
@@ -53,10 +54,9 @@ class DataTable extends Component {
                     timeout: 600,
                     onClose: function(e){
                          Alert.close(salert);
-                         window.location.href="/media/mediaBdManage"
+                         that.props.onClear()
                     }
                 });
-
             }else{
                 Alert.error(json.response.msg, {
                     effect: '',
@@ -158,15 +158,14 @@ class DataTable extends Component {
             <tr>
                 <th>媒体ID</th>
                 <th>媒体名称</th>
-                <th>验证微信</th>
-                <th>来源</th>
                 <th>注册邮箱</th>
-                <th>运营分类</th>
                 <th>MMS分类</th>
                 <th>运营状态</th>
                 <th>总阅读数</th>
                 <th>总推荐数</th>
                 <th>总订阅数</th>
+                <th>总评论数</th>
+                <th>总发文数</th>
                 <th>拓展人员</th>
                 <th>认领到行业</th>
                 <th>详细数据</th>
@@ -175,18 +174,6 @@ class DataTable extends Component {
         )
     }
     renderOwner(item){
-        /*
-        let buttons = item['Fop_str'].join()
-        if(buttons.indexOf('change')!==-1||buttons.indexOf('turn')!==-1){
-            return(
-                <td className="owner" data-value={item['Fbd_owner']}><input type="text" placeholder="未填" defaultValue={item['Fbd_owner']} onChange={this.handleChange.bind(this)}></input></td>
-            )
-        } else {
-            return (
-                <td>{item['Fbd_owner']}</td>
-            )
-        }
-        */
         return (
             <td>{item['Fbd_owner']}</td>
         )
@@ -199,14 +186,13 @@ class DataTable extends Component {
                     <tr key={i}>
                         <td>{item['Fid']}</td>
                         <td>{item['Fname']}</td>
-                        <td>{item['Fwechat']}</td>
-                        <td>{item['Fsource_value']}</td>
                         <td>{item['Freg_email']}</td>
-                        <td>{item['Fcatalog_value']}</td>
                         <td>{item['Fmms_catalog']}</td>
                         <td>{item['Fstatus_value']}</td>
                         <td>{item['Freadpv']}</td>
                         <td>{item['Frecommend']}</td>
+                        <td>{item['Fcomment']}</td>
+                        <td>{item['Fissued']}</td>
                         <td>{item['Ffans']}</td>
                         {this.renderOwner(item)}
                         {this.renderSelect(item)}
@@ -273,6 +259,7 @@ class DataTable extends Component {
        this.closeModal()
     }
     render() {
+        console.log(111)
         const isOpen = this.state.modalIsOpen
         return (
             <div>

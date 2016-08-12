@@ -1,0 +1,21 @@
+/**
+ * reset
+ */
+body, div, td, button, input, select, textarea { text-align: left; }
+body, div, ul, ol, li, h1, h2, h3, h4, h5, h6, form, fieldset, legend, input, textarea, p, fieldset, table, pre, th, td, dl, dt, dd, blockquote { margin: 0; padding: 0; }
+table { border-collapse: collapse; border-spacing: 0; }
+img { border: 0; }
+address, caption, cite, code, dfn, em, th, var { font-style: normal; font-weight: normal; }
+ul li { list-style-image: none; list-style-position: outside; list-style-type: none; }
+caption, th { text-align: left; }
+h1, h2, h3, h4, h5, h6 { font-size: 1.1em; vertical-align: baseline; *zoom: 1; }
+input[type=radio], input[type=checkbox] { vertical-align: middle; }
+textarea { overflow: auto; resize: none; }
+a:focus, button:focus { outline-style: none; outline-width: 0; }
+
+/**
+ * clearfix description
+ */
+.clearfix:after { visibility: hidden; display: block; font-size: 0; content: " "; clear: both; height: 0; }
+* html .clearfix { zoom: 1; }
+*:first-child+html .clearfix { zoom: 1; }

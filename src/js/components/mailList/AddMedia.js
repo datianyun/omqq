@@ -16,8 +16,7 @@ class AddMedia extends Component {
             return false
         } else {
             return true
-        }+
-        320
+        }
     }
     render() {
         const tips = '目前邮件配置仅支持正式运营的非个人自媒体号，且必须30天内有发文'

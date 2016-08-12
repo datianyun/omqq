@@ -27,11 +27,16 @@ class Frame extends Component {
         }
     }
 
+    refresh(){
+        const { dispatch, selectedMedia } = this.props
+        dispatch(TodoActions.fetchPostsIfNeeded(selectedMedia))
+    }
+
     render() {
-        const {posts,actions,total,selectedMedia,analysis,isAdmin} = this.props
+        const {posts,actions,total,selectedMedia,analysis,menus} = this.props
         return (
             <div>
-                <Wrap isAdmin={isAdmin} analysis={analysis} actions={actions} posts={posts} selectedMedia={selectedMedia} total={total}></Wrap>
+                <Wrap refresh={this.refresh.bind(this)} menus={menus} analysis={analysis} actions={actions} posts={posts} selectedMedia={selectedMedia} total={total}></Wrap>
                 <Footer></Footer>
                 <Alert stack={{limit: 3}} />
             </div>
@@ -57,8 +62,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-    const {selectedMedia, postsByMedia,analysis} = state
-    const isAdmin = g_userInfo.admin
+    const {selectedMedia, postsByMedia,analysis,menus} = state
     const pkey = selectedMedia.currentPage + '-' +selectedMedia.search + '-' +selectedMedia.key+ '-' + selectedMedia.path
     const {isFetching,lastUpdated,items: posts,total} = postsByMedia[pkey] || {
         isFetching: true,
@@ -68,7 +72,7 @@ function mapStateToProps(state) {
         selectedMedia,
         posts,
         total,
-        isAdmin,
+        menus,
         analysis,
         isFetching,
         lastUpdated

@@ -4,7 +4,10 @@ var webConfig = require('./webpack.config.js');
 var del = require('del');
 var cssmin = require('gulp-cssmin');
 var rename = require('gulp-rename');
-var uglify = require('gulp-uglify')
+var uglify = require('gulp-uglify');
+var fileinclude = require('gulp-file-include');
+var postcss = require('gulp-postcss');
+var rename = require('gulp-rename');
 //清理文件
 gulp.task('clean', function(){
 	del('./dist/');
@@ -18,12 +21,13 @@ gulp.task('webpack', function() {
   .pipe(gulp.dest('dist/js'));
 });
 
-//压缩CSS
-gulp.task('cssmin', function () {
-	gulp.src('src/css/*.css')
-		.pipe(cssmin())
-		.pipe(rename({suffix: '.min'}))
-		.pipe(gulp.dest('dist/css'));
+//压缩css代码
+gulp.task('cssmin', function(){
+    gulp.src('src/css/export/*.css')
+        .pipe(fileinclude())
+        .pipe(cssmin())
+        .pipe(rename({suffix: '.min'}))
+        .pipe(gulp.dest('dist/css'));
 });
 
 //复制图片
