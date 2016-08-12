@@ -16,14 +16,10 @@ app.use(webpackHotMiddleware(compiler, {
 app.use('/static', express.static('dist'));
 
 
-<<<<<<< HEAD
 app.get("/login", function(req, res) {
     res.sendFile(__dirname + '/src/html/login.html')
 })
-=======
-app.get("/", function(req, res) {
-    res.sendFile(__dirname + '/src/html/index.html')
->>>>>>> 4c60ba27cdfe518a94b9106ad86299eaa5307754
+
 
 app.listen(port, function(error) {
     if (error) {

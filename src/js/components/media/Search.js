@@ -113,7 +113,7 @@ class Search extends Component {
                 <div className="input-group-btn">
                     <button type="button" className="btn btn-secondary search" onClick={this.handleSearch.bind(this)}>搜索</button>
                     <div className="form-group">
-                        <label for="select" className="form-label">自媒体帐号类型:</label>
+                        <label for="select" className="form-label">按</label>
                         <select name="select" className="form-control search-type" onChange={this.handleType.bind(this)}>
                             <option value="id">媒体ID</option>
                             <option value="email">注册邮箱</option>
